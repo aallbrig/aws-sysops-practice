@@ -97,6 +97,28 @@ aws ec2 describe-instances \
 
 ## Exercise 4.4 Create a Windows Instance via AWS CLI
 ### Up
+Identify default VPC, assuming jq is installed
+```
+aws ec2 describe-vpcs \
+| jq -c ".Vpcs \
+| map(select(.IsDefault \
+| contains(true)))[].VpcId" -r
+```
+
+1. Create security group if needed
+  1. Set variables
+  ```
+  VPC_ID=$( \
+    aws ec2 describe-vpcs | jq -c ".Vpcs | map(select(.IsDefault | contains(true)))[].VpcId" -r \
+  ) \
+  SG_NAME=AlphaBravoSG \
+  SG_DESCRIPTION="Security Group for Alpha Bravo"
+  ```
+  1. Identify if you already have relevant SG
+  ```
+  aws ec2 describe-security-groups | jq ".SecurityGroups | map(select(.GroupName | contains(\"$SG_NAME\")))[]"
+  ```
+===== Below to be deleted, up to "### Down" (exclusive)
 Before starting, take note of AMI ID for the target region.
 1. Set variables
 ```
