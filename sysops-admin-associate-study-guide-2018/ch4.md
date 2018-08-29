@@ -92,4 +92,4 @@ aws ec2 describe-instances \
 | jq ".Reservations[].Instances[].InstanceId" -r \
 | xargs -n1 -I instance_id aws ec2 terminate-instances --instance-ids instance_id
 ```
-
+1. If needed, delete security group and key pair if one was dedicated to this exercise
