@@ -59,3 +59,37 @@ If not using for Exercise 4.6
 1. Delete security group called `AlphaBravoSG`
 1. Delete key pair called `AlphaBravoKeyPair`
 
+## Exercise 4.3 Create Linux Instance via AWS CLI
+### Up
+Before starting, take not of AMI ID for the target region.
+
+1. Set variables
+```
+IMAGE_AMI= \
+KEY_NAME= \
+SECURITY_GROUP_ID= \
+SUBNET_ID= 
+```
+1. Run the command...
+```
+aws ec2 run-instances \
+--image-id $IMAGE_AMI \
+--count 1 \
+--instance-type t2.micro \
+--key-name $KEY_NAME \
+--security-group-ids $SECURITY_GROUP_ID \
+--subnet-id $SUBNET_ID
+```
+
+### Down
+1. You may need to run `aws ec2 describe-instances` to get instance IDs
+
+`aws ec2 describe-instances | jq ".Reservations[].Instances[].InstanceId" -r` can be used if `jq` is installed
+1. Once instance ID has been identified, run `aws ec2 terminate-instances --instance-ids ` and fill in instance ID value
+1. Handy one liner, to terminate all currently running EC2 instances
+```
+aws ec2 describe-instances \
+| jq ".Reservations[].Instances[].InstanceId" -r \
+| xargs -n1 -I instance_id aws ec2 terminate-instances --instance-ids instance_id
+```
+
