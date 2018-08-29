@@ -61,7 +61,7 @@ If not using for Exercise 4.6
 
 ## Exercise 4.3 Create Linux Instance via AWS CLI
 ### Up
-Before starting, take not of AMI ID for the target region.
+Before starting, take note of AMI ID for the target region.
 
 1. Set variables
 ```
@@ -80,6 +80,7 @@ aws ec2 run-instances \
 --security-group-ids $SECURITY_GROUP_ID \
 --subnet-id $SUBNET_ID
 ```
+1. SSH into instance, poke around a bit
 
 ### Down
 1. You may need to run `aws ec2 describe-instances` to get instance IDs
@@ -93,3 +94,40 @@ aws ec2 describe-instances \
 | xargs -n1 -I instance_id aws ec2 terminate-instances --instance-ids instance_id
 ```
 1. If needed, delete security group and key pair if one was dedicated to this exercise
+
+## Exercise 4.4 Create a Windows Instance via AWS CLI
+### Up
+Before starting, take note of AMI ID for the target region.
+1. Set variables
+```
+IMAGE_AMI= \
+KEY_NAME= \
+SECURITY_GROUP_ID= \
+SUBNET_ID= 
+```
+1. Run the command...
+```
+aws ec2 run-instances \
+--image-id $IMAGE_AMI \
+--count 1 \
+--instance-type t2.micro \
+--key-name $KEY_NAME \
+--security-group-ids $SECURITY_GROUP_ID \
+--subnet-id $SUBNET_ID
+```
+1. Make note of the instance ID (or run `aws ec2 describe-instances`) returned from previous command
+1. Use RDP to access this windows EC2 instance
+
+### Down
+1. You may need to run `aws ec2 describe-instances` to get instance IDs
+
+`aws ec2 describe-instances | jq ".Reservations[].Instances[].InstanceId" -r` can be used if `jq` is installed
+1. Once instance ID has been identified, run `aws ec2 terminate-instances --instance-ids ` and fill in instance ID value
+1. Handy one liner, to terminate all currently running EC2 instances
+```
+aws ec2 describe-instances \
+| jq ".Reservations[].Instances[].InstanceId" -r \
+| xargs -n1 -I instance_id aws ec2 terminate-instances --instance-ids instance_id
+```
+1. If needed, delete security group and key pair if one was dedicated to this exercise
+
