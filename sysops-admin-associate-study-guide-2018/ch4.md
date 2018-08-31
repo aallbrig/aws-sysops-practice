@@ -19,14 +19,14 @@
     1. `mkdir www && cd www`
     1. `touch index.html`
     1. Run...  
-    ```
-    cat <<HEREDOC > index.html
-    <html>
-      <head><title>Test HTML page</title></head>
-      <body><h3>Test HTML page</h3></body>
-    </html>
-    HEREDOC
-    ``` 
+        ```
+        cat <<HEREDOC > index.html
+        <html>
+          <head><title>Test HTML page</title></head>
+          <body><h3>Test HTML page</h3></body>
+        </html>
+        HEREDOC
+        ``` 
     1. `sudo python3 -m http.server 80`  
 1. Run `ifconfig -a` then make note of IP address
 1. Access instance metadata by running `curl http://169.254.169.254/latest/meta-data/public-ipv4`
@@ -64,113 +64,121 @@ If not using for Exercise 4.6
 Before starting, take note of AMI ID for the target region.
 
 1. Set variables
-```
-IMAGE_AMI= \
-KEY_NAME= \
-SECURITY_GROUP_ID= \
-SUBNET_ID= 
-```
+    ```
+    IMAGE_AMI= \
+    KEY_NAME= \
+    SECURITY_GROUP_ID= \
+    SUBNET_ID= 
+    ```
 1. Run the command...
-```
-aws ec2 run-instances \
---image-id $IMAGE_AMI \
---count 1 \
---instance-type t2.micro \
---key-name $KEY_NAME \
---security-group-ids $SECURITY_GROUP_ID \
---subnet-id $SUBNET_ID
-```
+    ```
+    aws ec2 run-instances \
+    --image-id $IMAGE_AMI \
+    --count 1 \
+    --instance-type t2.micro \
+    --key-name $KEY_NAME \
+    --security-group-ids $SECURITY_GROUP_ID \
+    --subnet-id $SUBNET_ID
+    ```
 1. SSH into instance, poke around a bit
 
 ### Down
 1. You may need to run `aws ec2 describe-instances` to get instance IDs
 
-`aws ec2 describe-instances | jq ".Reservations[].Instances[].InstanceId" -r` can be used if `jq` is installed
+    `aws ec2 describe-instances | jq ".Reservations[].Instances[].InstanceId" -r` can be used if `jq` is installed
 1. Once instance ID has been identified, run `aws ec2 terminate-instances --instance-ids ` and fill in instance ID value
 1. Handy one liner, to terminate all currently running EC2 instances
-```
-aws ec2 describe-instances \
-| jq ".Reservations[].Instances[].InstanceId" -r \
-| xargs -n1 -I instance_id aws ec2 terminate-instances --instance-ids instance_id
-```
+    ```
+    aws ec2 describe-instances \
+    | jq ".Reservations[].Instances[].InstanceId" -r \
+    | xargs -n1 -I instance_id aws ec2 terminate-instances --instance-ids instance_id
+    ```
 1. If needed, delete security group and key pair if one was dedicated to this exercise
 
 ## Exercise 4.4 Create a Windows Instance via AWS CLI
 ### Up
 
 1. Set variables
-```
-IMAGE_AMI="ami-0b7b74ba8473ec232" \
-VPC_ID=$( \
-  aws ec2 describe-vpcs | jq -c ".Vpcs | map(select(.IsDefault | contains(true)))[].VpcId" -r \
-) \
-SG_NAME=AlphaBravoSG \
-SG_DESCRIPTION="Security Group for Alpha Bravo"
-KEY_NAME=AlphaBravoKP \
-SUBNET_ID=$(
-  aws ec2 describe-subnets --filters "Name=vpc-id,Values=$VPC_ID" | jq ".Subnets[] | .SubnetId" -r | gshuf | head -n 1 \
-) \
-SECURITY_GROUP_ID=$( \
-  aws ec2 describe-security-groups | jq ".SecurityGroups | map(select(.GroupName | contains(\"$SG_NAME\")))[] .GroupId" -r \
-)
-```
+    ```
+    IMAGE_AMI="ami-0b7b74ba8473ec232" \
+    VPC_ID=$( \
+      aws ec2 describe-vpcs | jq -c ".Vpcs | map(select(.IsDefault | contains(true)))[].VpcId" -r \
+    ) \
+    SG_NAME=AlphaBravoSG \
+    SG_DESCRIPTION="Security Group for Alpha Bravo"
+    KEY_NAME=AlphaBravoKP \
+    SUBNET_ID=$(
+      aws ec2 describe-subnets --filters "Name=vpc-id,Values=$VPC_ID" | jq ".Subnets[] | .SubnetId" -r | gshuf | head -n 1 \
+    ) \
+    SECURITY_GROUP_ID=$( \
+      aws ec2 describe-security-groups | jq ".SecurityGroups | map(select(.GroupName | contains(\"$SG_NAME\")))[] .GroupId" -r \
+    )
+    ```
 1. Identify if you already have relevant security group
-```
-aws ec2 describe-security-groups | jq ".SecurityGroups | map(select(.GroupName | contains(\"$SG_NAME\")))[]"
-```
+    ```
+    aws ec2 describe-security-groups | jq ".SecurityGroups | map(select(.GroupName | contains(\"$SG_NAME\")))[]"
+    ```
 
-Above will return an object or nothing. If nothing, the security group does not exist.  
-  1. If no security group exists, run...
-  ```
-  aws ec2 create-security-group --group-name $SG_NAME \
-  --description $SG_DESCRIPTION \
-  --vpc-id $VPC_ID
-  ```
-  1. Assign security group ID to variable
-  ```
-  SECURITY_GROUP_ID=$(aws ec2 describe-security-groups | jq ".SecurityGroups | map(select(.GroupName | contains(\"$SG_NAME\")))[] .GroupId" -r)
-  ```
-  1. Create ingress rule for RDP from anywhere (0.0.0.0/0)
-  ```
-  aws ec2 authorize-security-group-ingress \
-  --group-id $SECURITY_GROUP_ID \
-  --protocol tcp \
-  --port 3389 \
-  --cidr 0.0.0.0/0 
-  ```
+    Above will return an object or nothing. If nothing, the security group does not exist.  
+    1. If no security group exists, run...
+        ```
+        aws ec2 create-security-group --group-name $SG_NAME \
+        --description $SG_DESCRIPTION \
+        --vpc-id $VPC_ID
+        ```
+    1. Assign security group ID to variable
+        ```
+        SECURITY_GROUP_ID=$(aws ec2 describe-security-groups | jq ".SecurityGroups | map(select(.GroupName | contains(\"$SG_NAME\")))[] .GroupId" -r)
+        ```
+    1. Create ingress rule for RDP from anywhere (0.0.0.0/0)
+        ```
+        aws ec2 authorize-security-group-ingress \
+        --group-id $SECURITY_GROUP_ID \
+        --protocol tcp \
+        --port 3389 \
+        --cidr 0.0.0.0/0 
+        ```
 1. Identify if you already have relevant key pair
-```
-aws ec2 describe-key-pairs --key-name $KEY_NAME
-```
-  1. If you do not, run
-  ```
-  aws ec2 create-key-pair --key-name $KEY_NAME  --query 'KeyMaterial' --output text > "${KEY_NAME}.pem"
-  ```
+    ```
+    aws ec2 describe-key-pairs --key-name $KEY_NAME
+    ```
+    1. If you do not, run
+        ```
+        aws ec2 create-key-pair --key-name $KEY_NAME  --query 'KeyMaterial' --output text > "${KEY_NAME}.pem"
+        ```
 1. Run the command...
-```
-aws ec2 run-instances \
---image-id $IMAGE_AMI \
---count 1 \
---instance-type t2.micro \
---key-name $KEY_NAME \
---security-group-ids $SECURITY_GROUP_ID \
---subnet-id $SUBNET_ID
-```
+    ```
+    aws ec2 run-instances \
+    --image-id $IMAGE_AMI \
+    --count 1 \
+    --instance-type t2.micro \
+    --key-name $KEY_NAME \
+    --security-group-ids $SECURITY_GROUP_ID \
+    --subnet-id $SUBNET_ID
+    ```
+1. RDP into instance, poke around a bit
 
 ### Down
 1. You may need to run `aws ec2 describe-instances` to get instance IDs
 
-`aws ec2 describe-instances | jq ".Reservations[].Instances[].InstanceId" -r` can be used if `jq` is installed
+    `aws ec2 describe-instances | jq ".Reservations[].Instances[].InstanceId" -r` can be used if `jq` is installed
 1. Once instance ID has been identified, run `aws ec2 terminate-instances --instance-ids ` and fill in instance ID value
 1. Handy one liner, to terminate all currently running EC2 instances
-```
-aws ec2 describe-instances \
-| jq ".Reservations[].Instances[].InstanceId" -r \
-| xargs -n1 -I instance_id aws ec2 terminate-instances --instance-ids instance_id
-```
+    ```
+    aws ec2 describe-instances \
+    | jq ".Reservations[].Instances[].InstanceId" -r \
+    | xargs -n1 -I instance_id aws ec2 terminate-instances --instance-ids instance_id
+    ```
 1. If needed, delete security group and key pair if one was dedicated to this exercise
-```
-aws ec2 delete-key-pair --key-name $KEY_NAME
-aws ec2 delete-security-group --group-id $SECURITY_GROUP_ID
-```
+    ```
+    aws ec2 delete-key-pair --key-name $KEY_NAME
+    aws ec2 delete-security-group --group-id $SECURITY_GROUP_ID
+    ```
+
+## Exercise 4.5 Inspect AWS Service Health Dashboards
+### Up
+1. Go to http://status.aws.amazon.com and poke around a bit
+1. Go to http://phd.aws.amazon.com and poke around a bit
+### Down
+1. Log out of console
 
