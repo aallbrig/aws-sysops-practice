@@ -182,3 +182,104 @@ Before starting, take note of AMI ID for the target region.
 ### Down
 1. Log out of console
 
+## Exercise 4.6 Use Elastic IP Address
+### Up
+1. Use existing or spin up new EC2 instance (Ubuntu Server)
+    1. Assign variables
+        ```
+        IMAGE_AMI="ami-04169656fea786776" \
+        VPC_ID=$( \
+          aws ec2 describe-vpcs | jq -c ".Vpcs | map(select(.IsDefault | contains(true)))[].VpcId" -r \
+        ) \
+        SG_NAME=YankeeZuluSG \
+        SG_DESCRIPTION="Security Group for Yankee Zulu"
+        KEY_NAME=YankeeZuluKP \
+        SUBNET_ID=$(
+          aws ec2 describe-subnets --filters "Name=vpc-id,Values=$VPC_ID" | jq ".Subnets[] | .SubnetId" -r | gshuf | head -n 1 \
+        ) \
+        SECURITY_GROUP_ID=$( \
+          aws ec2 describe-security-groups | jq ".SecurityGroups | map(select(.GroupName | contains(\"$SG_NAME\")))[] .GroupId" -r \
+        )
+        ```
+    1. Identify or create security group
+        1. If none already exist
+
+            ```
+            aws ec2 create-security-group --group-name $SG_NAME \
+            --description $SG_DESCRIPTION \
+            --vpc-id $VPC_ID
+            ```
+        1. Assign newly created security group ID to variable
+            ```
+            SECURITY_GROUP_ID=$(aws ec2 describe-security-groups | jq ".SecurityGroups | map(select(.GroupName | contains(\"$SG_NAME\")))[] .GroupId" -r)
+            ```
+        1. Create ingress rule for SSH from anywhere (0.0.0.0/0)
+            ```
+            aws ec2 authorize-security-group-ingress \
+            --group-id $SECURITY_GROUP_ID \
+            --protocol tcp \
+            --port 22 \
+            --cidr 0.0.0.0/0
+            ```
+    1. Identify or create key pair
+        1. If none already exist
+
+            ```
+            aws ec2 create-key-pair --key-name $KEY_NAME  --query 'KeyMaterial' --output text > "${KEY_NAME}.pem"
+            ```
+        1. Ensure proper permissions exist on newly created .pem file
+            ```
+            chmod 400 "${KEY_NAME}.pem"
+            ```
+    1. Spin up EC2 instance
+        ```
+        aws ec2 run-instances \
+        --image-id $IMAGE_AMI \
+        --count 1 \
+        --instance-type t2.micro \
+        --key-name $KEY_NAME \
+        --security-group-ids $SECURITY_GROUP_ID \
+        --subnet-id $SUBNET_ID
+        ```
+    1. Assign instance ID to variable
+        ```
+        INSTANCE_ID=$(aws ec2 describe-instances | jq '.Reservations[].Instances[].InstanceId' -r)
+        ```
+        TODO: Above two commands could be combined
+1. Make note of it's public IP address. This will be changed in later instructions
+    1. Run this command to identify EC2 instance public IP address
+1. Allocate new Elastic IP address, if none exist
+    ```
+    aws ec2 allocate-address --domain vpc
+    ```
+
+    ```
+    ALLOCATION_ID=$(aws ec2 describe-addresses | jq '.Addresses[].AllocationId' -r)
+    ```
+
+    TODO: Above steps could probably be combined into one command. One can take the output of the create command and pipe into a variable.
+1. Associate it to your EC2 instance
+    ```
+    aws ec2 associate-address --instance-id $INSTANCE_ID --allocation-id $ALLOCATION_ID
+    ```
+1. SSH into your EC2 instance from the elastic IP address (this will be different than previous "identify default public address of EC2 instance" step)
+
+### Down
+1. Disassociate elastic IP address
+1. Release elastic IP address
+1. Terminate EC2 instance
+1. Remove security group and key pair
+
+## Exercise 4.7 Work with Metadata
+### Up
+1. Launch EC2 instance
+1. Run command `curl http://169.254.169.254/latest/meta-data` to see meta data
+1. Add onto above curl command to see more information e.g.
+    ```
+    curl http://169.254.169.254/latest/meta-data/security-groups
+    curl http://169.254.169.254/latest/meta-data/public-ipv4
+    ```
+
+### Down
+1. Close down EC2 instance and any new security groups or keypairs for this exercise
+
