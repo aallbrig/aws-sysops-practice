@@ -121,7 +121,7 @@
 
 1. Create private subnet
     ```
-    PRIVATE_SUBNET_ID=$(aws ec2 create-subnet --vpc-id $VPC_ID --cidr-block 10.0.1.0/24 | jq '.Subnet.SubnetId' -r)
+    PRIVATE_SUBNET_ID=$(aws ec2 create-subnet --vpc-id $VPC_ID --cidr-block 10.0.1.0/24 --query 'Subnet.SubnetId' --output text)
     ```
 ### Down
 1. Terminate test EC2 instance, if applicable
