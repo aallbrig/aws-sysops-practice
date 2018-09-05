@@ -48,18 +48,18 @@
 1. Create VPC and assign ID to variable
 
     ```
-    VPC_ID=$(aws ec2 create-vpc --cidr-block 10.0.0.0/16 | jq '.Vpc.VpcId' -r)
+    VPC_ID=$(aws ec2 create-vpc --cidr-block 10.0.0.0/16 --query 'Vpc.VpcId' --output text)
     ```
 1. Create public subnet
     1. Create a subnet
 
         ```
-        PUBLIC_SUBNET_ID=$(aws ec2 create-subnet --vpc-id $VPC_ID --cidr-block 10.0.0.0/24 | jq '.Subnet.SubnetId' -r)
+        PUBLIC_SUBNET_ID=$(aws ec2 create-subnet --vpc-id $VPC_ID --cidr-block 10.0.0.0/24 --query 'Subnet.SubnetId' --output text)
         ```
     1. Create internet gateway
 
         ```
-        INTERNET_GATEWAY_ID=$(aws ec2 create-internet-gateway | jq '.InternetGateway.InternetGatewayId' -r)
+        INTERNET_GATEWAY_ID=$(aws ec2 create-internet-gateway --query 'InternetGateway.InternetGatewayId' --output text)
         ```
     1. Attach internet gateway to VPC
 
@@ -69,7 +69,7 @@
     1. Create custom route table for VPC
         
         ```
-        ROUTE_TABLE_ID=$(aws ec2 create-route-table --vpc-id $VPC_ID | jq '.RouteTable.RouteTableId' -r)
+        ROUTE_TABLE_ID=$(aws ec2 create-route-table --vpc-id $VPC_ID --query 'RouteTable.RouteTableId' --output text)
         ```
     1. Create route that points all traffic to internet gateway
 
@@ -90,10 +90,108 @@
         ```
         aws ec2 associate-route-table --subnet-id $PUBLIC_SUBNET_ID --route-table-id $ROUTE_TABLE_ID
         ```
+    1. Map public IP on launch when launching into public subnet
+        
+        ```
+        aws ec2 modify-subnet-attribute --subnet-id $PUBLIC_SUBNET_ID --map-public-ip-on-launch
+        ```
+    1. (Test) Create EC2 instance in newly created VPC and verify internet access
+        1. Create keypair, if needed
+
+            ```
+            KEY_NAME=TestTangoKP
+
+            aws ec2 create-key-pair --key-name $KEY_NAME --query 'KeyMaterial' --output text > "${KEY_NAME}.pem"
+
+            chmod 400 "${KEY_NAME}.pem"
+            ```
+        1. Create security group and SSH ingress rule, if needed
+
+            ```
+            SG_ID=$(aws ec2 create-security-group --vpc-id $VPC_ID --group-name TestTangoSG --description "SSH access for TestTango instance." --query 'GroupId' --output text)
+
+            aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 22 --cidr 0.0.0.0/0
+            ```
+        1. Launch instance into public subnet
+
+            ```
+            INSTANCE_ID=$(aws ec2 run-instances --image-id ami-04169656fea786776  --count 1 --instance-type t2.micro --key-name TestTangoKP --security-group-ids $SG_ID --subnet-id $PUBLIC_SUBNET_ID --query 'Instances[0].InstanceId' --output text)
+            ```
+        1. SSH into instance and verify internet access
 
 1. Create private subnet
     ```
     PRIVATE_SUBNET_ID=$(aws ec2 create-subnet --vpc-id $VPC_ID --cidr-block 10.0.1.0/24 | jq '.Subnet.SubnetId' -r)
     ```
 ### Down
+1. Terminate test EC2 instance, if applicable
+
+    ```
+    aws ec2 terminate-instances --instance-ids $INSTANCE_ID
+    ```
+1. Delete security group
+
+    ```
+    aws ec2 delete-security-group --group-id $SG_ID
+    ```
+1. Delete key pair
+
+    ```
+    aws ec2 delete-key-pair --key-name $KEY_NAME
+    ```
+1. Delete subnets (public, private)
+
+    ```
+    aws ec2 delete-subnet --subnet-id $PRIVATE_SUBNET_ID
+
+    aws ec2 delete-subnet --subnet-id $PUBLIC_SUBNET_ID
+    ```
+1. Delete custom route table
+
+    ```
+    aws ec2 delete-route-table --route-table-id $ROUTE_TABLE_ID
+    ```
+1. Detach internet gateway from VPC
+
+    ```
+    aws ec2 detach-internet-gateway --internet-gateway-id $INTERNET_GATEWAY_ID --vpc-id $VPC_ID
+    ```
+1. Delete internet gateway
+
+    ```
+    aws ec2 delete-internet-gateway --internet-gateway-id $INTERNET_GATEWAY_ID
+    ```
+1. Delete VPC
+
+    ```
+    aws ec2 delete-vpc --vpc-id $VPC_ID
+    ```
+
+## Exercise 5.3 Tag Your VPC and Subnets
+### Up
+1. Spin up a new VPC, with private & public subnet
+1. Through AWS management console (because piecing together ARNs is a beast), find your VPC and tag it
+1. Through AWS management console, find your VPC's subnets and tag them
+
+### Down
+1. Delete tags from your VPC
+1. Spin down your VPC, private & public subnet
+
+## Exercise 5.4 Create an Elastic Network Interface (ENI)
+### Up
+1. Create Elastic IP address
+
+    ```
+    ALLOCATION_ID=$(aws ec2 allocate-address --query AllocationId --output text)
+    ```
+1. Create a network interface; use your VPC's public subnet and use a security group (default or new)
+
+    ```
+    ```
+1. Tag your ENI via AWS management console
+
+### Down
+1. Delete your tag
+1. Delete your ENI
+1. Release your Elastic IP
 
