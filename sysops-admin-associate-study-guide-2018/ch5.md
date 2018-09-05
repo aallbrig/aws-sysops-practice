@@ -108,14 +108,14 @@
         1. Create security group and SSH ingress rule, if needed
 
             ```
-            SG_ID=$(aws ec2 create-security-group --vpc-id $VPC_ID --group-name TestTangoSG --description "SSH access for TestTango instance." --query 'GroupId' --output text)
+            SECURITY_GROUP_ID=$(aws ec2 create-security-group --vpc-id $VPC_ID --group-name TestTangoSG --description "SSH access for TestTango instance." --query 'GroupId' --output text)
 
-            aws ec2 authorize-security-group-ingress --group-id $SG_ID --protocol tcp --port 22 --cidr 0.0.0.0/0
+            aws ec2 authorize-security-group-ingress --group-id $SECURITY_GROUP_ID --protocol tcp --port 22 --cidr 0.0.0.0/0
             ```
         1. Launch instance into public subnet
 
             ```
-            INSTANCE_ID=$(aws ec2 run-instances --image-id ami-04169656fea786776  --count 1 --instance-type t2.micro --key-name TestTangoKP --security-group-ids $SG_ID --subnet-id $PUBLIC_SUBNET_ID --query 'Instances[0].InstanceId' --output text)
+            INSTANCE_ID=$(aws ec2 run-instances --image-id ami-04169656fea786776  --count 1 --instance-type t2.micro --key-name TestTangoKP --security-group-ids $SECURITY_GROUP_ID --subnet-id $PUBLIC_SUBNET_ID --query 'Instances[0].InstanceId' --output text)
             ```
         1. SSH into instance and verify internet access
 
@@ -132,12 +132,18 @@
 1. Delete security group
 
     ```
-    aws ec2 delete-security-group --group-id $SG_ID
+    aws ec2 delete-security-group --group-id $SECURITY_GROUP_ID
     ```
 1. Delete key pair
 
     ```
     aws ec2 delete-key-pair --key-name $KEY_NAME
+    ```
+
+    If located in same directory, remove the key pair's ".pem" file too
+
+    ```
+    rm "${KEY_NAME}.pem"
     ```
 1. Delete subnets (public, private)
 
@@ -169,7 +175,7 @@
 
 ## Exercise 5.3 Tag Your VPC and Subnets
 ### Up
-1. Spin up a new VPC, with private & public subnet
+1. Spin up a new VPC, with private & public subnet from exercise 5.2b
 1. Through AWS management console (because piecing together ARNs is a beast), find your VPC and tag it
 1. Through AWS management console, find your VPC's subnets and tag them
 
@@ -177,8 +183,9 @@
 1. Delete tags from your VPC
 1. Spin down your VPC, private & public subnet
 
-## Exercise 5.4 Create an Elastic Network Interface (ENI)
+## Exercise 5.4, 5.5, 5.6, 5.7 Create an Elastic Network Interface (ENI), associate EIP with ENI, test ENI, delete VPC
 ### Up
+1. Spin up a new VPC, with private subnet, public subnet, and EC2 instance from exercise 5.2b
 1. Create Elastic IP address
 
     ```
@@ -187,11 +194,22 @@
 1. Create a network interface; use your VPC's public subnet and use a security group (default or new)
 
     ```
+    NETWORK_INTERFACE_ID=$(aws ec2 create-network-interface --groups $SECURITY_GROUP_ID --subnet-id $PUBLIC_SUBNET_ID --query 'NetworkInterface.NetworkInterfaceId' --output text)
     ```
 1. Tag your ENI via AWS management console
+1. Associate EIP to ENI
 
+    ```
+    ASSOCIATION_ID=$(aws ec2 associate-address --allocation-id $ALLOCATION_ID --network-interface-id $NETWORK_INTERFACE_ID --query 'AssociationId' --output text)
+    ```
+1. Attach network interface to EC2 instance
+
+    ```
+    ATTACHMENT_ID=$(aws ec2 attach-network-interface --network-interface-id $NETWORK_INTERFACE_ID --instance-id $INSTANCE_ID --device-index 1 --query 'AttachmentId' --output text)
+    ```
 ### Down
 1. Delete your tag
 1. Delete your ENI
 1. Release your Elastic IP
+1. Spin down VPC following 5.2b Down instructions
 
