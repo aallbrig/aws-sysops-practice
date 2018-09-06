@@ -186,17 +186,17 @@
 ## Exercise 5.4, 5.5, 5.6, 5.7 Create an Elastic Network Interface (ENI), associate EIP with ENI, test ENI, delete VPC
 ### Up
 1. Spin up a new VPC, with private subnet, public subnet, and EC2 instance from exercise 5.2b
-1. Create Elastic IP address
-
-    ```
-    ALLOCATION_ID=$(aws ec2 allocate-address --query AllocationId --output text)
-    ```
 1. Create a network interface; use your VPC's public subnet and use a security group (default or new)
 
     ```
     NETWORK_INTERFACE_ID=$(aws ec2 create-network-interface --groups $SECURITY_GROUP_ID --subnet-id $PUBLIC_SUBNET_ID --query 'NetworkInterface.NetworkInterfaceId' --output text)
     ```
 1. Tag your ENI via AWS management console
+1. Create Elastic IP address
+
+    ```
+    ALLOCATION_ID=$(aws ec2 allocate-address --query AllocationId --output text)
+    ```
 1. Associate EIP to ENI
 
     ```
@@ -208,8 +208,22 @@
     ATTACHMENT_ID=$(aws ec2 attach-network-interface --network-interface-id $NETWORK_INTERFACE_ID --instance-id $INSTANCE_ID --device-index 1 --query 'AttachmentId' --output text)
     ```
 ### Down
-1. Delete your tag
-1. Delete your ENI
+1. Delete your tag through AWS management console (optional, as the resources are being deleted)
+1. Detach ENI resource from EC2 instance
+    ```
+    aws ec2 detach-network-interface --attachment-id $ATTACHMENT_ID
+    ```
+1. Disassociate EIP from ENI
+    ```
+    aws ec2 disassociate-address --association-id $ASSOCIATION_ID
+    ```
 1. Release your Elastic IP
+    ```
+    aws ec2 release-address --allocation-id $ALLOCATION_ID
+    ```
+1. Delete ENI resource
+    ```
+    aws ec2 delete-network-interface --network-interface-id $NETWORK_INTERFACE_ID
+    ```
 1. Spin down VPC following 5.2b Down instructions
 
