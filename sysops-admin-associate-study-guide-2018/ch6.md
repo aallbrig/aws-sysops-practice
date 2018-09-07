@@ -62,8 +62,24 @@ N/A because no resources were created, thus no resources need to be destroyed
 
 ## Exercise 6.3 Create and attach an EFS volume
 ### Up
+1. Launch EC2 instance (preferably linux ami)
+1. Open EFS service dashboard and create file system
+1. Log in to console of linux instance, install NFS client on EC2 instance
+    ```
+    sudo yum install -y nfs-utils
+    ```
+1. Make directory for newly created EFS
+    ```
+    mkdir efs
+    ```
+1. Mount the newly created file system using DNS name
+    ```
+    sudo mount -t nfs4 -o nfscers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2 $EFS_DNS / efs
+    ```
 
 ### Down
+1. Terminate EC2 instance
+1. Delete EFS file system
 
 ## Exercise 6.4 Create and use S3 bucket
 ### Up
