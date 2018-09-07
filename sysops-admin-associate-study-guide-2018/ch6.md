@@ -48,8 +48,17 @@
 
 ## Exercise 6.2 Monitor EBS using CloudWatch
 ### Up
+1. Open CloudWatch service dashboard in management console and navigate to EBS per-volume metrics
+    ```
+    aws cloudwatch list-metrics --namespace "AWS/EBS" --max-items 10
+    ```
+1. Poke around, explore
+    ```
+    aws cloudwatch help
+    ```
 
 ### Down
+N/A because no resources were created, thus no resources need to be destroyed
 
 ## Exercise 6.3 Create and attach an EFS volume
 ### Up
