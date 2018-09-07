@@ -83,8 +83,49 @@ N/A because no resources were created, thus no resources need to be destroyed
 
 ## Exercise 6.4 Create and use S3 bucket
 ### Up
+1. Create globally unique name for S3 bucket
+    ```
+    RANDOM_BUCKET_NAME="test-bucket-$(openssl rand -hex 18)"
+    ```
+1. Create S3 bucket
+    ```
+    aws s3 mb "s3://${RANDOM_BUCKET_NAME}"
+    ```
+1. Test S3 bucket
+    1. Create random file to upload
+        ```
+        touch test.txt
+        ```
+    1. Upload file to newly created S3 bucket
+        ```
+        aws s3 cp test.txt "s3://${RANDOM_BUCKET_NAME}/test.txt"
+        ```
+    1. Verify upload by listing out contents of bucket
+        ```
+        aws s3 ls "s3://${RANDOM_BUCKET_NAME}"
+        ```
+    1. Delete local test.txt file
+        ```
+        rm test.txt
+        ```
+    1. Download text.txt file from S3 bucket
+        ```
+        aws s3 cp "s3://${RANDOM_BUCKET_NAME}/test.txt" test.txt
+        ```
 
 ### Down
+1. Remove test file (if created for testing purposes)
+    ```
+    rm test.txt
+    ```
+1. Recursively remove all content in bucket
+    ```
+    aws s3 rm "s3://${RANDOM_BUCKET_NAME}" --recursive
+    ```
+1. Delete s3 bucket
+    ```
+    aws s3api delete-bucket --bucket "${RANDOM_BUCKET_NAME}"
+    ```
 
 ## Exercise 6.5 Enable S3 versioning
 ### Up
