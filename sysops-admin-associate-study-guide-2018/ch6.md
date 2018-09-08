@@ -94,16 +94,27 @@ N/A because no resources were created, thus no resources need to be destroyed
 1. Test S3 bucket
     1. Create random file to upload
         ```
-        touch test.txt
+        echo "Test S3 bucket upload!" > test.txt
         ```
     1. Upload file to newly created S3 bucket
         ```
-        aws s3 cp test.txt "s3://${RANDOM_BUCKET_NAME}/test.txt"
+        aws s3 cp test.txt "s3://${RANDOM_BUCKET_NAME}/test.txt" --acl public-read
         ```
     1. Verify upload by listing out contents of bucket
         ```
         aws s3 ls "s3://${RANDOM_BUCKET_NAME}"
         ```
+    1. Check public read permission via cURL
+        ```
+        curl "https://s3.amazonaws.com/$RANDOM_BUCKET_NAME/test.txt"
+        ```
+        - If you want to verify public access by restricting access, follow these next commands
+            ```
+            aws s3 cp test.txt "s3://${RANDOM_BUCKET_NAME}/test.txt" --acl private
+            curl "https://s3.amazonaws.com/$RANDOM_BUCKET_NAME/test.txt"
+            ```
+
+            You will see a generic "access denied" HTML page
     1. Delete local test.txt file
         ```
         rm test.txt
