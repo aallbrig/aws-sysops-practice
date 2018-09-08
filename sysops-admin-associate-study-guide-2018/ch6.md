@@ -94,7 +94,7 @@ N/A because no resources were created, thus no resources need to be destroyed
 1. Test S3 bucket
     1. Create random file to upload
         ```
-        echo "Test S3 bucket upload!" > test.txt
+        echo "Test S3 bucket upload\!" > test.txt
         ```
     1. Upload file to newly created S3 bucket
         ```
@@ -140,8 +140,31 @@ N/A because no resources were created, thus no resources need to be destroyed
 
 ## Exercise 6.5 Enable S3 versioning
 ### Up
+1. If you do not already have a bucket, follow the steps for exercise 6.4
+1. Enable S3 bucket versioning
+    ```
+    aws s3api put-bucket-versioning --bucket $RANDOM_BUCKET_NAME --versioning-configuration Status=Enabled
+    ```
+    1. Get a baseline on versions
+        ```
+        aws s3api list-object-versions --bucket $RANDOM_BUCKET_NAME
+        ```
+        Notice that there is only one version
+    1. Write a new version of `test.txt` to test versioning
+        ```
+        echo "Test S3 bucket upload\! Version 2" > test.txt
+        ```
+    1. Upload new version of `test.txt` to S3 bucket
+        ```
+        aws s3 cp test.txt "s3://${RANDOM_BUCKET_NAME}/test.txt"
+        ```
+    1. Check versions-- you should see a new listing after uploading your new version of `test.txt`
+        ```
+        aws s3api list-object-versions --bucket $RANDOM_BUCKET_NAME
+        ```
 
 ### Down
+1. Follow steps for 6.4 to spin down bucket
 
 ## Exercise 6.6 Enable cross-region replication
 ### Up
