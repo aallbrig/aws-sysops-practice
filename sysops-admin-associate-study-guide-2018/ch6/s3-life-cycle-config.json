@@ -1,0 +1,13 @@
+{
+  "Rules": [
+    {
+      "ID": "Move to Glacier after thirty days",
+      "Prefix": "cold_storage/",
+      "Status": "Enabled",
+      "Transition": {
+        "Days": 30,
+        "StorageClass": "GLACIER"
+      }
+    }
+  ]
+}

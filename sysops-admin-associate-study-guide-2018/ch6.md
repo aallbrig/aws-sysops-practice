@@ -168,16 +168,75 @@ N/A because no resources were created, thus no resources need to be destroyed
 
 ## Exercise 6.6 Enable cross-region replication
 ### Up
+1. Create globally unique names for two S3 buckets
+    ```
+    RANDOM_BUCKET_NAME_A="test-bucket-$(openssl rand -hex 18)"
+    RANDOM_BUCKET_NAME_B="test-bucket-$(openssl rand -hex 18)"
+    ```
+1. Create both buckets but in different regions
+    ```
+    aws s3 mb "s3://${RANDOM_BUCKET_NAME_A}" --region us-west-2
+    aws s3 mb "s3://${RANDOM_BUCKET_NAME_B}" --region us-east-1
+    ```
+1. Enable S3 bucket versioning
+    ```
+    aws s3api put-bucket-versioning --bucket $RANDOM_BUCKET_NAME_A --versioning-configuration Status=Enabled
+    aws s3api put-bucket-versioning --bucket $RANDOM_BUCKET_NAME_B --versioning-configuration Status=Enabled
+    ```
+1. Do the rest through management console; configure the source bucket (A) to replicate to a destination bucket (B). The form will allow you to create a new IAM role, which is required for this functionality.
 
 ### Down
+1. Delete buckets via AWS management console.
 
 ## Exercise 6.7 Create a Glacier Vault
 ### Up
+1. Create random vault name
+    ```
+    VAULT_NAME="test-vault-$(openssl rand -hex 18)"
+    ```
+1. Create vault, using `-` to signify your account ID
+    ```
+    aws glacier create-vault --acount-id - --vault-name $VAULT_NAME
+    ```
 
 ### Down
+1. Remove vault
+    ```
+    aws glacier delete-vault --account-id - --vault-name $VAULT_NAME
+    ```
 
 ## Exercise 6.8 Enable Lifecycle Rules
 ### Up
+1. Create S3 bucket, if you do not have one already
+1. Create `.json` file with a "move to glacier" lifecycle rule. I created mine inside `ch6/s3-life-cycle-config.json` directory/file.
+    ```
+    {
+      "Rules": [
+        {
+          "ID": "Move to Glacier after thirty days",
+          "Prefix": "cold_storage/",
+          "Status": "Enabled",
+          "Transition": {
+            "Days": 30,
+            "StorageClass": "GLACIER"
+          }
+        }
+      ]
+    }
+    ```
+1. Apply lifecycle configuration
+    ```
+    aws s3api put-bucket-lifecycle --bucket $RANDOM_BUCKET_NAME --lifecycle-configuration file://ch6/s3-life-cycle-config.json
+    ```
+1. Verify lifecycle rule has been applied
+    ```
+    aws s3api get-bucket-lifecycle-configuration --bucket $RANDOM_BUCKET_NAME
+    ```
 
 ### Down
+1. Delete lifecycle rule from bucket
+    ```
+    aws s3api delete-bucket-lifecycle --bucket $RANDOM_BUCKET_NAME
+    ```
+1. Delete S3 bucket, if one was created
 
