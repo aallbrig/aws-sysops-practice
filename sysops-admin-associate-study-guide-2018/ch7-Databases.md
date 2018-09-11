@@ -59,7 +59,29 @@
 
 ## Exercise 7.3 Add Items to DynamoDB Table
 ### Up
+1. Spin up a table from exercise 7.2, if needed
+1. Add first item
+    ```
+    aws dynamodb put-item --table-name $TABLE_NAME --item '{"Artist": {"S": "Mystical Father"}, "Title": {"S": "Song for Elijah"}, "AlbumTitle": {"S": "Lovely Laura Likes Llamas"} }' --return-consumed-capacity TOTAL
+    ```
+1. Add second item
+    ```
+    aws dynamodb put-item --table-name $TABLE_NAME --item '{"Artist": {"S": "Steps in Springtime"}, "Title": {"S": "Allemande Left but will Return"}, "AlbumTitle": {"S": "Square dances for Round Rooms"} }' --return-consumed-capacity TOTAL
+    ```
+1. "Scan" your items to see them!
+    ```
+    aws dynamodb scan --table-name $TABLE_NAME
+    ```
 ### Down
+1. Remove second item
+    ```
+    aws dynamodb delete-item --table-name $TABLE_NAME --key '{ "Artist": {"S": "Steps in Springtime"}, "Title": {"S": "Allemande Left but will Return"} }'
+    ```
+1. Remove first item
+    ```
+    aws dynamodb delete-item --table-name $TABLE_NAME --key '{ "Artist": {"S": "Mystical Father"}, "Title": {"S": "Song for Elijah"} }'
+    ```
+1. Delete table, if needed, by following 7.2 down instructions
 
 ## Exercise 7.4 Create MySQL RDS DB Instance
 ### Up
