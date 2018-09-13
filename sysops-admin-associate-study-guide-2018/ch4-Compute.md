@@ -19,7 +19,7 @@
     1. `mkdir www && cd www`
     1. `touch index.html`
     1. Run...  
-        ```
+        ```sh
         cat <<HEREDOC > index.html
         <html>
           <head><title>Test HTML page</title></head>
@@ -64,14 +64,14 @@ If not using for Exercise 4.6
 Before starting, take note of AMI ID for the target region.
 
 1. Set variables
-    ```
+    ```sh
     IMAGE_AMI= \
     KEY_NAME= \
     SECURITY_GROUP_ID= \
     SUBNET_ID= 
     ```
 1. Run the command...
-    ```
+    ```sh
     aws ec2 run-instances \
     --image-id $IMAGE_AMI \
     --count 1 \
@@ -88,7 +88,7 @@ Before starting, take note of AMI ID for the target region.
     `aws ec2 describe-instances | jq ".Reservations[].Instances[].InstanceId" -r` can be used if `jq` is installed
 1. Once instance ID has been identified, run `aws ec2 terminate-instances --instance-ids ` and fill in instance ID value
 1. Handy one liner, to terminate all currently running EC2 instances
-    ```
+    ```sh
     aws ec2 describe-instances \
     | jq ".Reservations[].Instances[].InstanceId" -r \
     | xargs -n1 -I instance_id aws ec2 terminate-instances --instance-ids instance_id
@@ -99,7 +99,7 @@ Before starting, take note of AMI ID for the target region.
 ### Up
 
 1. Set variables
-    ```
+    ```sh
     IMAGE_AMI="ami-0b7b74ba8473ec232" \
     VPC_ID=$( \
       aws ec2 describe-vpcs | jq -c ".Vpcs | map(select(.IsDefault | contains(true)))[].VpcId" -r \
@@ -115,23 +115,23 @@ Before starting, take note of AMI ID for the target region.
     )
     ```
 1. Identify if you already have relevant security group
-    ```
+    ```sh
     aws ec2 describe-security-groups | jq ".SecurityGroups | map(select(.GroupName | contains(\"$SG_NAME\")))[]"
     ```
 
     Above will return an object or nothing. If nothing, the security group does not exist.  
     1. If no security group exists, run...
-        ```
+        ```sh
         aws ec2 create-security-group --group-name $SG_NAME \
         --description $SG_DESCRIPTION \
         --vpc-id $VPC_ID
         ```
     1. Assign security group ID to variable
-        ```
+        ```sh
         SECURITY_GROUP_ID=$(aws ec2 describe-security-groups | jq ".SecurityGroups | map(select(.GroupName | contains(\"$SG_NAME\")))[] .GroupId" -r)
         ```
     1. Create ingress rule for RDP from anywhere (0.0.0.0/0)
-        ```
+        ```sh
         aws ec2 authorize-security-group-ingress \
         --group-id $SECURITY_GROUP_ID \
         --protocol tcp \
@@ -139,15 +139,15 @@ Before starting, take note of AMI ID for the target region.
         --cidr 0.0.0.0/0 
         ```
 1. Identify if you already have relevant key pair
-    ```
+    ```sh
     aws ec2 describe-key-pairs --key-name $KEY_NAME
     ```
     1. If you do not, run
-        ```
+        ```sh
         aws ec2 create-key-pair --key-name $KEY_NAME  --query 'KeyMaterial' --output text > "${KEY_NAME}.pem"
         ```
 1. Run the command...
-    ```
+    ```sh
     aws ec2 run-instances \
     --image-id $IMAGE_AMI \
     --count 1 \
@@ -164,13 +164,13 @@ Before starting, take note of AMI ID for the target region.
     `aws ec2 describe-instances | jq ".Reservations[].Instances[].InstanceId" -r` can be used if `jq` is installed
 1. Once instance ID has been identified, run `aws ec2 terminate-instances --instance-ids ` and fill in instance ID value
 1. Handy one liner, to terminate all currently running EC2 instances
-    ```
+    ```sh
     aws ec2 describe-instances \
     | jq ".Reservations[].Instances[].InstanceId" -r \
     | xargs -n1 -I instance_id aws ec2 terminate-instances --instance-ids instance_id
     ```
 1. If needed, delete security group and key pair if one was dedicated to this exercise
-    ```
+    ```sh
     aws ec2 delete-key-pair --key-name $KEY_NAME
     aws ec2 delete-security-group --group-id $SECURITY_GROUP_ID
     ```
@@ -186,7 +186,7 @@ Before starting, take note of AMI ID for the target region.
 ### Up
 1. Use existing or spin up new EC2 instance (Ubuntu Server)
     1. Assign variables
-        ```
+        ```sh
         IMAGE_AMI="ami-04169656fea786776" \
         VPC_ID=$( \
           aws ec2 describe-vpcs | jq -c ".Vpcs | map(select(.IsDefault | contains(true)))[].VpcId" -r \
@@ -204,17 +204,17 @@ Before starting, take note of AMI ID for the target region.
     1. Identify or create security group
         1. If none already exist
 
-            ```
+            ```sh
             aws ec2 create-security-group --group-name $SG_NAME \
             --description $SG_DESCRIPTION \
             --vpc-id $VPC_ID
             ```
         1. Assign newly created security group ID to variable
-            ```
+            ```sh
             SECURITY_GROUP_ID=$(aws ec2 describe-security-groups | jq ".SecurityGroups | map(select(.GroupName | contains(\"$SG_NAME\")))[] .GroupId" -r)
             ```
         1. Create ingress rule for SSH from anywhere (0.0.0.0/0)
-            ```
+            ```sh
             aws ec2 authorize-security-group-ingress \
             --group-id $SECURITY_GROUP_ID \
             --protocol tcp \
@@ -224,15 +224,15 @@ Before starting, take note of AMI ID for the target region.
     1. Identify or create key pair
         1. If none already exist
 
-            ```
+            ```sh
             aws ec2 create-key-pair --key-name $KEY_NAME  --query 'KeyMaterial' --output text > "${KEY_NAME}.pem"
             ```
         1. Ensure proper permissions exist on newly created .pem file
-            ```
+            ```sh
             chmod 400 "${KEY_NAME}.pem"
             ```
     1. Spin up EC2 instance
-        ```
+        ```sh
         aws ec2 run-instances \
         --image-id $IMAGE_AMI \
         --count 1 \
@@ -242,24 +242,24 @@ Before starting, take note of AMI ID for the target region.
         --subnet-id $SUBNET_ID
         ```
     1. Assign instance ID to variable
-        ```
+        ```sh
         INSTANCE_ID=$(aws ec2 describe-instances | jq '.Reservations[].Instances[].InstanceId' -r)
         ```
         TODO: Above two commands could be combined
 1. Make note of it's public IP address. This will be changed in later instructions
     1. Run this command to identify EC2 instance public IP address
 1. Allocate new Elastic IP address, if none exist
-    ```
+    ```sh
     aws ec2 allocate-address --domain vpc
     ```
 
-    ```
+    ```sh
     ALLOCATION_ID=$(aws ec2 describe-addresses | jq '.Addresses[].AllocationId' -r)
     ```
 
     TODO: Above steps could probably be combined into one command. One can take the output of the create command and pipe into a variable.
 1. Associate it to your EC2 instance
-    ```
+    ```sh
     aws ec2 associate-address --instance-id $INSTANCE_ID --allocation-id $ALLOCATION_ID
     ```
 1. SSH into your EC2 instance from the elastic IP address (this will be different than previous "identify default public address of EC2 instance" step)
@@ -275,7 +275,7 @@ Before starting, take note of AMI ID for the target region.
 1. Launch EC2 instance
 1. Run command `curl http://169.254.169.254/latest/meta-data` to see meta data
 1. Add onto above curl command to see more information e.g.
-    ```
+    ```sh
     curl http://169.254.169.254/latest/meta-data/security-groups
     curl http://169.254.169.254/latest/meta-data/public-ipv4
     ```
