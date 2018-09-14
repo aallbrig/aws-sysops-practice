@@ -7,8 +7,8 @@
     "doc": "docs"
   },
   "scripts": {
-    "start": "gitbook serve",
-    "build": "gitbook build . docs"
+    "start": "node_modules/.bin/gitbook serve",
+    "build": "node_modules/.bin/gitbook build . docs"
   },
   "repository": {
     "type": "git",
@@ -20,7 +20,8 @@
     "url": "https://github.com/aallbrig/aws-sysops-practice/issues"
   },
   "homepage": "https://github.com/aallbrig/aws-sysops-practice#readme",
-  "devDependencies": {
-    "gitbook": "^3.2.3"
+  "devDependencies": {},
+  "dependencies": {
+    "gitbook-cli": "^2.3.2"
   }
 }
