@@ -1,0 +1,534 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Chapter 5 Networking · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="ch6-Storage-Systems.html" />
+    
+    
+    <link rel="prev" href="ch4-Compute.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    SysOps Administrator Associate Study Guide 2018
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="ch3-Security-and-AWS-Identity-and-Access-Management-IAM.html">
+            
+                <a href="ch3-Security-and-AWS-Identity-and-Access-Management-IAM.html">
+            
+                    
+                    Chapter 3 Security and AWS Identity and Access Management (IAM)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="ch4-Compute.html">
+            
+                <a href="ch4-Compute.html">
+            
+                    
+                    Chapter 4 Compute
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.2.3" data-path="ch5-Networking.html">
+            
+                <a href="ch5-Networking.html">
+            
+                    
+                    Chapter 5 Networking
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.4" data-path="ch6-Storage-Systems.html">
+            
+                <a href="ch6-Storage-Systems.html">
+            
+                    
+                    Chapter 6 Storage Systems
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.5" data-path="ch7-Databases.html">
+            
+                <a href="ch7-Databases.html">
+            
+                    
+                    Chapter 7 Databases
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.6" data-path="ch8-Application-Deployment-and-Management.html">
+            
+                <a href="ch8-Application-Deployment-and-Management.html">
+            
+                    
+                    Chapter 8 Application Deployment and Management
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Chapter 5 Networking</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="chapter-5-networking">Chapter 5 Networking</h1>
+<h2 id="exercise-51-create-an-elastic-ip">Exercise 5.1 Create an Elastic IP</h2>
+<h3 id="up">Up</h3>
+<ol>
+<li><p>Allocate Elastic IP address</p>
+<pre><code class="lang-sh"> aws ec2 allocate-address
+</code></pre>
+</li>
+<li><p>Make note of IP address</p>
+<pre><code class="lang-sh"> aws ec2 describe-addresses | jq <span class="hljs-string">&apos;.Addresses[].PublicIp&apos;</span>
+</code></pre>
+</li>
+</ol>
+<h3 id="down">Down</h3>
+<ol>
+<li><p>Disassociate Elastic IP address</p>
+<pre><code class="lang-sh"> <span class="hljs-comment"># Identify allocation ID</span>
+ aws ec2 describe-addresses
+ <span class="hljs-comment"># Disassociate address</span>
+ aws ec2 disassociate-address
+</code></pre>
+</li>
+<li>Release Elastic IP address<pre><code class="lang-sh"> <span class="hljs-comment"># Identify allocation ID</span>
+ aws ec2 describe-addresses
+ <span class="hljs-comment"># Release address</span>
+ aws ec2 release-address --allocation-id
+</code></pre>
+</li>
+</ol>
+<h2 id="exercise-52a-create-vpc-from-management-console">Exercise 5.2a Create VPC from management console</h2>
+<h3 id="up">Up</h3>
+<ol>
+<li>Start the VPC wizard from VPC section in AWS management console</li>
+<li>Select &quot;VPC with public and private subnets&quot;</li>
+<li>Name VPC &quot;VPC-1&quot; and cidr block of 10.0.0.16</li>
+<li>Assign public cidr block of 10.0.0.0/24 and no preference on availability zone</li>
+<li>Assign private cidr block of 10.0.1.0/24 and no preference on availability zone</li>
+<li>Assign NAT gateway and use the elastic IP address from Exercise 5.1</li>
+<li>Assign an S3 endpoint and leave default DNS and tenancy options</li>
+</ol>
+<h3 id="down">Down</h3>
+<ol>
+<li>In &quot;Your VPCs&quot; section, find your VPC, select it,  and execute &quot;Actions&gt;Delete VPC&quot;</li>
+</ol>
+<h2 id="exercise-52b-create-vpc-from-aws-cli">Exercise 5.2b Create VPC from AWS CLI</h2>
+<h3 id="up">Up</h3>
+<ol>
+<li><p>Create VPC and assign ID to variable</p>
+<pre><code class="lang-sh"> VPC_ID=$(aws ec2 create-vpc --cidr-block 10.0.0.0/16 --query <span class="hljs-string">&apos;Vpc.VpcId&apos;</span> --output text)
+</code></pre>
+</li>
+<li><p>Create public subnet</p>
+<ol>
+<li><p>Create a subnet</p>
+<pre><code class="lang-sh"> PUBLIC_SUBNET_ID=$(aws ec2 create-subnet --vpc-id <span class="hljs-variable">$VPC_ID</span> --cidr-block 10.0.0.0/24 --query <span class="hljs-string">&apos;Subnet.SubnetId&apos;</span> --output text)
+</code></pre>
+</li>
+<li><p>Create internet gateway</p>
+<pre><code class="lang-sh"> INTERNET_GATEWAY_ID=$(aws ec2 create-internet-gateway --query <span class="hljs-string">&apos;InternetGateway.InternetGatewayId&apos;</span> --output text)
+</code></pre>
+</li>
+<li><p>Attach internet gateway to VPC</p>
+<pre><code class="lang-sh"> aws ec2 attach-internet-gateway --vpc-id <span class="hljs-variable">$VPC_ID</span> --internet-gateway-id <span class="hljs-variable">$INTERNET_GATEWAY_ID</span>
+</code></pre>
+</li>
+<li><p>Create custom route table for VPC</p>
+<pre><code class="lang-sh"> ROUTE_TABLE_ID=$(aws ec2 create-route-table --vpc-id <span class="hljs-variable">$VPC_ID</span> --query <span class="hljs-string">&apos;RouteTable.RouteTableId&apos;</span> --output text)
+</code></pre>
+</li>
+<li><p>Create route that points all traffic to internet gateway</p>
+<pre><code class="lang-sh"> aws ec2 create-route \
+ --route-table-id <span class="hljs-variable">$ROUTE_TABLE_ID</span> \
+ --gateway-id <span class="hljs-variable">$INTERNET_GATEWAY_ID</span> \
+ --destination-cidr-block 0.0.0.0/0
+</code></pre>
+<p> Confirm the desired route exists by running...</p>
+<pre><code class="lang-sh"> aws ec2 describe-route-tables --route-table-id <span class="hljs-variable">$ROUTE_TABLE_ID</span>
+</code></pre>
+</li>
+<li><p>Associate subnet with route table</p>
+<pre><code class="lang-sh"> aws ec2 associate-route-table --subnet-id <span class="hljs-variable">$PUBLIC_SUBNET_ID</span> --route-table-id <span class="hljs-variable">$ROUTE_TABLE_ID</span>
+</code></pre>
+</li>
+<li><p>Map public IP on launch when launching into public subnet</p>
+<pre><code class="lang-sh"> aws ec2 modify-subnet-attribute --subnet-id <span class="hljs-variable">$PUBLIC_SUBNET_ID</span> --map-public-ip-on-launch
+</code></pre>
+</li>
+<li><p>(Test) Create EC2 instance in newly created VPC and verify internet access</p>
+<ol>
+<li><p>Create keypair, if needed</p>
+<pre><code class="lang-sh"> KEY_NAME=TestTangoKP
+
+ aws ec2 create-key-pair --key-name <span class="hljs-variable">$KEY_NAME</span> --query <span class="hljs-string">&apos;KeyMaterial&apos;</span> --output text &gt; <span class="hljs-string">&quot;<span class="hljs-variable">${KEY_NAME}</span>.pem&quot;</span>
+
+ chmod 400 <span class="hljs-string">&quot;<span class="hljs-variable">${KEY_NAME}</span>.pem&quot;</span>
+</code></pre>
+</li>
+<li><p>Create security group and SSH ingress rule, if needed</p>
+<pre><code class="lang-sh"> SECURITY_GROUP_ID=$(aws ec2 create-security-group --vpc-id <span class="hljs-variable">$VPC_ID</span> --group-name TestTangoSG --description <span class="hljs-string">&quot;SSH access for TestTango instance.&quot;</span> --query <span class="hljs-string">&apos;GroupId&apos;</span> --output text)
+
+ aws ec2 authorize-security-group-ingress --group-id <span class="hljs-variable">$SECURITY_GROUP_ID</span> --protocol tcp --port 22 --cidr 0.0.0.0/0
+</code></pre>
+</li>
+<li><p>Launch instance into public subnet</p>
+<pre><code class="lang-sh"> INSTANCE_ID=$(aws ec2 run-instances --image-id ami-04169656fea786776  --count 1 --instance-type t2.micro --key-name TestTangoKP --security-group-ids <span class="hljs-variable">$SECURITY_GROUP_ID</span> --subnet-id <span class="hljs-variable">$PUBLIC_SUBNET_ID</span> --query <span class="hljs-string">&apos;Instances[0].InstanceId&apos;</span> --output text)
+</code></pre>
+</li>
+<li>SSH into instance and verify internet access</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Create private subnet</p>
+<pre><code class="lang-sh"> PRIVATE_SUBNET_ID=$(aws ec2 create-subnet --vpc-id <span class="hljs-variable">$VPC_ID</span> --cidr-block 10.0.1.0/24 --query <span class="hljs-string">&apos;Subnet.SubnetId&apos;</span> --output text)
+</code></pre>
+<h3 id="down">Down</h3>
+</li>
+<li><p>Terminate test EC2 instance, if applicable</p>
+<pre><code class="lang-sh"> aws ec2 terminate-instances --instance-ids <span class="hljs-variable">$INSTANCE_ID</span>
+</code></pre>
+</li>
+<li><p>Delete security group</p>
+<pre><code class="lang-sh"> aws ec2 delete-security-group --group-id <span class="hljs-variable">$SECURITY_GROUP_ID</span>
+</code></pre>
+</li>
+<li><p>Delete key pair</p>
+<pre><code class="lang-sh"> aws ec2 delete-key-pair --key-name <span class="hljs-variable">$KEY_NAME</span>
+</code></pre>
+<p> If located in same directory, remove the key pair&apos;s &quot;.pem&quot; file too</p>
+<pre><code class="lang-sh"> rm <span class="hljs-string">&quot;<span class="hljs-variable">${KEY_NAME}</span>.pem&quot;</span>
+</code></pre>
+</li>
+<li><p>Delete subnets (public, private)</p>
+<pre><code class="lang-sh"> aws ec2 delete-subnet --subnet-id <span class="hljs-variable">$PRIVATE_SUBNET_ID</span>
+
+ aws ec2 delete-subnet --subnet-id <span class="hljs-variable">$PUBLIC_SUBNET_ID</span>
+</code></pre>
+</li>
+<li><p>Delete custom route table</p>
+<pre><code class="lang-sh"> aws ec2 delete-route-table --route-table-id <span class="hljs-variable">$ROUTE_TABLE_ID</span>
+</code></pre>
+</li>
+<li><p>Detach internet gateway from VPC</p>
+<pre><code class="lang-sh"> aws ec2 detach-internet-gateway --internet-gateway-id <span class="hljs-variable">$INTERNET_GATEWAY_ID</span> --vpc-id <span class="hljs-variable">$VPC_ID</span>
+</code></pre>
+</li>
+<li><p>Delete internet gateway</p>
+<pre><code class="lang-sh"> aws ec2 delete-internet-gateway --internet-gateway-id <span class="hljs-variable">$INTERNET_GATEWAY_ID</span>
+</code></pre>
+</li>
+<li><p>Delete VPC</p>
+<pre><code class="lang-sh"> aws ec2 delete-vpc --vpc-id <span class="hljs-variable">$VPC_ID</span>
+</code></pre>
+</li>
+</ol>
+<h2 id="exercise-53-tag-your-vpc-and-subnets">Exercise 5.3 Tag Your VPC and Subnets</h2>
+<h3 id="up">Up</h3>
+<ol>
+<li>Spin up a new VPC, with private &amp; public subnet from exercise 5.2b</li>
+<li>Through AWS management console (because piecing together ARNs is a beast), find your VPC and tag it</li>
+<li>Through AWS management console, find your VPC&apos;s subnets and tag them</li>
+</ol>
+<h3 id="down">Down</h3>
+<ol>
+<li>Delete tags from your VPC</li>
+<li>Spin down your VPC, private &amp; public subnet</li>
+</ol>
+<h2 id="exercise-54-55-56-57-create-an-elastic-network-interface-eni-associate-eip-with-eni-test-eni-delete-vpc">Exercise 5.4, 5.5, 5.6, 5.7 Create an Elastic Network Interface (ENI), associate EIP with ENI, test ENI, delete VPC</h2>
+<h3 id="up">Up</h3>
+<ol>
+<li>Spin up a new VPC, with private subnet, public subnet, and EC2 instance from exercise 5.2b</li>
+<li><p>Create a network interface; use your VPC&apos;s public subnet and use a security group (default or new)</p>
+<pre><code class="lang-sh"> NETWORK_INTERFACE_ID=$(aws ec2 create-network-interface --groups <span class="hljs-variable">$SECURITY_GROUP_ID</span> --subnet-id <span class="hljs-variable">$PUBLIC_SUBNET_ID</span> --query <span class="hljs-string">&apos;NetworkInterface.NetworkInterfaceId&apos;</span> --output text)
+</code></pre>
+</li>
+<li>Tag your ENI via AWS management console</li>
+<li><p>Create Elastic IP address</p>
+<pre><code class="lang-sh"> ALLOCATION_ID=$(aws ec2 allocate-address --query AllocationId --output text)
+</code></pre>
+</li>
+<li><p>Associate EIP to ENI</p>
+<pre><code class="lang-sh"> ASSOCIATION_ID=$(aws ec2 associate-address --allocation-id <span class="hljs-variable">$ALLOCATION_ID</span> --network-interface-id <span class="hljs-variable">$NETWORK_INTERFACE_ID</span> --query <span class="hljs-string">&apos;AssociationId&apos;</span> --output text)
+</code></pre>
+</li>
+<li><p>Attach network interface to EC2 instance</p>
+<pre><code class="lang-sh"> ATTACHMENT_ID=$(aws ec2 attach-network-interface --network-interface-id <span class="hljs-variable">$NETWORK_INTERFACE_ID</span> --instance-id <span class="hljs-variable">$INSTANCE_ID</span> --device-index 1 --query <span class="hljs-string">&apos;AttachmentId&apos;</span> --output text)
+</code></pre>
+<h3 id="down">Down</h3>
+</li>
+<li>Delete your tag through AWS management console (optional, as the resources are being deleted)</li>
+<li>Detach ENI resource from EC2 instance<pre><code class="lang-sh"> aws ec2 detach-network-interface --attachment-id <span class="hljs-variable">$ATTACHMENT_ID</span>
+</code></pre>
+</li>
+<li>Disassociate EIP from ENI<pre><code class="lang-sh"> aws ec2 disassociate-address --association-id <span class="hljs-variable">$ASSOCIATION_ID</span>
+</code></pre>
+</li>
+<li>Release your Elastic IP<pre><code class="lang-sh"> aws ec2 release-address --allocation-id <span class="hljs-variable">$ALLOCATION_ID</span>
+</code></pre>
+</li>
+<li>Delete ENI resource<pre><code class="lang-sh"> aws ec2 delete-network-interface --network-interface-id <span class="hljs-variable">$NETWORK_INTERFACE_ID</span>
+</code></pre>
+</li>
+<li>Spin down VPC following 5.2b Down instructions</li>
+</ol>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="ch4-Compute.html" class="navigation navigation-prev " aria-label="Previous page: Chapter 4 Compute">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="ch6-Storage-Systems.html" class="navigation navigation-next " aria-label="Next page: Chapter 6 Storage Systems">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Chapter 5 Networking","level":"1.2.3","depth":2,"next":{"title":"Chapter 6 Storage Systems","level":"1.2.4","depth":2,"path":"sysops-admin-associate-study-guide-2018/ch6-Storage-Systems.md","ref":"sysops-admin-associate-study-guide-2018/ch6-Storage-Systems.md","articles":[]},"previous":{"title":"Chapter 4 Compute","level":"1.2.2","depth":2,"path":"sysops-admin-associate-study-guide-2018/ch4-Compute.md","ref":"sysops-admin-associate-study-guide-2018/ch4-Compute.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"sysops-admin-associate-study-guide-2018/ch5-Networking.md","mtime":"2018-09-13T12:30:14.552Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-14T10:19:41.161Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-livereload/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

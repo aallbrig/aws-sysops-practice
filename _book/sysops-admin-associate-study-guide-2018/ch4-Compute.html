@@ -1,0 +1,619 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Chapter 4 Compute · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="ch5-Networking.html" />
+    
+    
+    <link rel="prev" href="ch3-Security-and-AWS-Identity-and-Access-Management-IAM.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    SysOps Administrator Associate Study Guide 2018
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="ch3-Security-and-AWS-Identity-and-Access-Management-IAM.html">
+            
+                <a href="ch3-Security-and-AWS-Identity-and-Access-Management-IAM.html">
+            
+                    
+                    Chapter 3 Security and AWS Identity and Access Management (IAM)
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.2.2" data-path="ch4-Compute.html">
+            
+                <a href="ch4-Compute.html">
+            
+                    
+                    Chapter 4 Compute
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3" data-path="ch5-Networking.html">
+            
+                <a href="ch5-Networking.html">
+            
+                    
+                    Chapter 5 Networking
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.4" data-path="ch6-Storage-Systems.html">
+            
+                <a href="ch6-Storage-Systems.html">
+            
+                    
+                    Chapter 6 Storage Systems
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.5" data-path="ch7-Databases.html">
+            
+                <a href="ch7-Databases.html">
+            
+                    
+                    Chapter 7 Databases
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.6" data-path="ch8-Application-Deployment-and-Management.html">
+            
+                <a href="ch8-Application-Deployment-and-Management.html">
+            
+                    
+                    Chapter 8 Application Deployment and Management
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Chapter 4 Compute</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="chapter-4-compute">Chapter 4 Compute</h1>
+<h2 id="exercise-41-create-a-linux-instance-via-aws-management-console">Exercise 4.1 Create a Linux Instance via AWS Management Console</h2>
+<h3 id="up">Up</h3>
+<ol>
+<li>Launch EC2</li>
+<li>Choose Linux AMI</li>
+<li>T.2 micro instance type (free tier eligible)</li>
+<li>Launch into default VPC</li>
+<li>Assign a public IP address</li>
+<li>Add tag to instance of <code>key</code> = <code>Yankee</code>, <code>value</code> = <code>Zulu</code></li>
+<li>Create new security group called <code>YankeeZuluSG</code></li>
+<li>Add rule to <code>YankeeZulu</code> security group that allows SSH access from anywhere (0.0.0.0/0)</li>
+<li>Launch instance</li>
+<li>Create new key pair, name it <code>YankeeZuluKeyPair</code>, save private portion</li>
+<li>SSH into instance<ol>
+<li>You may need to <code>chmod 400</code> the newly downloaded keypair</li>
+</ol>
+</li>
+<li>Install software updates<ol>
+<li>Maybe you want to start a simple web server; assuming Ubuntu OS...</li>
+<li>Add HTTP inbound rule to <code>YankeeZuluSG</code> from anywhere</li>
+<li><code>mkdir www &amp;&amp; cd www</code></li>
+<li><code>touch index.html</code></li>
+<li>Run...  <pre><code class="lang-sh"> cat &lt;&lt;HEREDOC &gt; index.html
+ &lt;html&gt;
+   &lt;head&gt;&lt;title&gt;Test HTML page&lt;/title&gt;&lt;/head&gt;
+   &lt;body&gt;&lt;h3&gt;Test HTML page&lt;/h3&gt;&lt;/body&gt;
+ &lt;/html&gt;
+ HEREDOC
+</code></pre>
+</li>
+<li><code>sudo python3 -m http.server 80</code>  </li>
+</ol>
+</li>
+<li>Run <code>ifconfig -a</code> then make note of IP address</li>
+<li>Access instance metadata by running <code>curl http://169.254.169.254/latest/meta-data/public-ipv4</code></li>
+<li>Exist SSH session</li>
+</ol>
+<h3 id="down">Down</h3>
+<p>If not using for Exercise 4.6</p>
+<ol>
+<li>Terminate instance</li>
+<li>Delete security group called <code>YankeeZuluSG</code></li>
+<li>Delete keypair <code>YankeeZuluKeyPair</code></li>
+</ol>
+<h2 id="exercise-42-create-a-windows-instance-via-aws-management-console">Exercise 4.2 Create a Windows Instance via AWS Management Console</h2>
+<h3 id="up">Up</h3>
+<ol>
+<li>Launch EC2</li>
+<li>Choose Windows 2016 Base AMI</li>
+<li>The book wants T2.medium, but that isn&apos;t free tier so... t2.micro it is! Let&apos;s see how well the t2.micro handles RDP</li>
+<li>Launch into default VPC</li>
+<li>Assign public IP address</li>
+<li>Add tag to instance of <code>key</code> = <code>alpha</code>, <code>value</code> = <code>bravo</code></li>
+<li>Create new security group called <code>AlphaBravoSG</code></li>
+<li>Add rule to security group that allows RDP from anywhere (0.0.0.0/0)</li>
+<li>Launch instance</li>
+<li>Create new key pair, name it <code>AlphaBravoKeyPair</code><ol>
+<li>You may need to <code>chmod 400</code> the newly downloaded keypair</li>
+</ol>
+</li>
+<li>On connect instance UI, decrypt administrator password, then download the RDP file</li>
+<li>Connect to instance and poke around for a bit</li>
+</ol>
+<h3 id="down">Down</h3>
+<ol>
+<li>Terminate instance</li>
+<li>Delete security group called <code>AlphaBravoSG</code></li>
+<li>Delete key pair called <code>AlphaBravoKeyPair</code></li>
+</ol>
+<h2 id="exercise-43-create-linux-instance-via-aws-cli">Exercise 4.3 Create Linux Instance via AWS CLI</h2>
+<h3 id="up">Up</h3>
+<p>Before starting, take note of AMI ID for the target region.</p>
+<ol>
+<li>Set variables<pre><code class="lang-sh"> IMAGE_AMI= \
+ KEY_NAME= \
+ SECURITY_GROUP_ID= \
+ SUBNET_ID=
+</code></pre>
+</li>
+<li>Run the command...<pre><code class="lang-sh"> aws ec2 run-instances \
+ --image-id <span class="hljs-variable">$IMAGE_AMI</span> \
+ --count 1 \
+ --instance-type t2.micro \
+ --key-name <span class="hljs-variable">$KEY_NAME</span> \
+ --security-group-ids <span class="hljs-variable">$SECURITY_GROUP_ID</span> \
+ --subnet-id <span class="hljs-variable">$SUBNET_ID</span>
+</code></pre>
+</li>
+<li>SSH into instance, poke around a bit</li>
+</ol>
+<h3 id="down">Down</h3>
+<ol>
+<li><p>You may need to run <code>aws ec2 describe-instances</code> to get instance IDs</p>
+<p> <code>aws ec2 describe-instances | jq &quot;.Reservations[].Instances[].InstanceId&quot; -r</code> can be used if <code>jq</code> is installed</p>
+</li>
+<li>Once instance ID has been identified, run <code>aws ec2 terminate-instances --instance-ids</code> and fill in instance ID value</li>
+<li>Handy one liner, to terminate all currently running EC2 instances<pre><code class="lang-sh"> aws ec2 describe-instances \
+ | jq <span class="hljs-string">&quot;.Reservations[].Instances[].InstanceId&quot;</span> -r \
+ | xargs -n1 -I instance_id aws ec2 terminate-instances --instance-ids instance_id
+</code></pre>
+</li>
+<li>If needed, delete security group and key pair if one was dedicated to this exercise</li>
+</ol>
+<h2 id="exercise-44-create-a-windows-instance-via-aws-cli">Exercise 4.4 Create a Windows Instance via AWS CLI</h2>
+<h3 id="up">Up</h3>
+<ol>
+<li>Set variables<pre><code class="lang-sh"> IMAGE_AMI=<span class="hljs-string">&quot;ami-0b7b74ba8473ec232&quot;</span> \
+ VPC_ID=$( \
+   aws ec2 describe-vpcs | jq -c <span class="hljs-string">&quot;.Vpcs | map(select(.IsDefault | contains(true)))[].VpcId&quot;</span> -r \
+ ) \
+ SG_NAME=AlphaBravoSG \
+ SG_DESCRIPTION=<span class="hljs-string">&quot;Security Group for Alpha Bravo&quot;</span>
+ KEY_NAME=AlphaBravoKP \
+ SUBNET_ID=$(
+   aws ec2 describe-subnets --filters <span class="hljs-string">&quot;Name=vpc-id,Values=<span class="hljs-variable">$VPC_ID</span>&quot;</span> | jq <span class="hljs-string">&quot;.Subnets[] | .SubnetId&quot;</span> -r | gshuf | head -n 1 \
+ ) \
+ SECURITY_GROUP_ID=$( \
+   aws ec2 describe-security-groups | jq <span class="hljs-string">&quot;.SecurityGroups | map(select(.GroupName | contains(\&quot;<span class="hljs-variable">$SG_NAME</span>\&quot;)))[] .GroupId&quot;</span> -r \
+ )
+</code></pre>
+</li>
+<li><p>Identify if you already have relevant security group</p>
+<pre><code class="lang-sh"> aws ec2 describe-security-groups | jq <span class="hljs-string">&quot;.SecurityGroups | map(select(.GroupName | contains(\&quot;<span class="hljs-variable">$SG_NAME</span>\&quot;)))[]&quot;</span>
+</code></pre>
+<p> Above will return an object or nothing. If nothing, the security group does not exist.  </p>
+<ol>
+<li>If no security group exists, run...<pre><code class="lang-sh"> aws ec2 create-security-group --group-name <span class="hljs-variable">$SG_NAME</span> \
+ --description <span class="hljs-variable">$SG_DESCRIPTION</span> \
+ --vpc-id <span class="hljs-variable">$VPC_ID</span>
+</code></pre>
+</li>
+<li>Assign security group ID to variable<pre><code class="lang-sh"> SECURITY_GROUP_ID=$(aws ec2 describe-security-groups | jq <span class="hljs-string">&quot;.SecurityGroups | map(select(.GroupName | contains(\&quot;<span class="hljs-variable">$SG_NAME</span>\&quot;)))[] .GroupId&quot;</span> -r)
+</code></pre>
+</li>
+<li>Create ingress rule for RDP from anywhere (0.0.0.0/0)<pre><code class="lang-sh"> aws ec2 authorize-security-group-ingress \
+ --group-id <span class="hljs-variable">$SECURITY_GROUP_ID</span> \
+ --protocol tcp \
+ --port 3389 \
+ --cidr 0.0.0.0/0
+</code></pre>
+</li>
+</ol>
+</li>
+<li>Identify if you already have relevant key pair<pre><code class="lang-sh"> aws ec2 describe-key-pairs --key-name <span class="hljs-variable">$KEY_NAME</span>
+</code></pre>
+<ol>
+<li>If you do not, run<pre><code class="lang-sh"> aws ec2 create-key-pair --key-name <span class="hljs-variable">$KEY_NAME</span>  --query <span class="hljs-string">&apos;KeyMaterial&apos;</span> --output text &gt; <span class="hljs-string">&quot;<span class="hljs-variable">${KEY_NAME}</span>.pem&quot;</span>
+</code></pre>
+</li>
+</ol>
+</li>
+<li>Run the command...<pre><code class="lang-sh"> aws ec2 run-instances \
+ --image-id <span class="hljs-variable">$IMAGE_AMI</span> \
+ --count 1 \
+ --instance-type t2.micro \
+ --key-name <span class="hljs-variable">$KEY_NAME</span> \
+ --security-group-ids <span class="hljs-variable">$SECURITY_GROUP_ID</span> \
+ --subnet-id <span class="hljs-variable">$SUBNET_ID</span>
+</code></pre>
+</li>
+<li>RDP into instance, poke around a bit</li>
+</ol>
+<h3 id="down">Down</h3>
+<ol>
+<li><p>You may need to run <code>aws ec2 describe-instances</code> to get instance IDs</p>
+<p> <code>aws ec2 describe-instances | jq &quot;.Reservations[].Instances[].InstanceId&quot; -r</code> can be used if <code>jq</code> is installed</p>
+</li>
+<li>Once instance ID has been identified, run <code>aws ec2 terminate-instances --instance-ids</code> and fill in instance ID value</li>
+<li>Handy one liner, to terminate all currently running EC2 instances<pre><code class="lang-sh"> aws ec2 describe-instances \
+ | jq <span class="hljs-string">&quot;.Reservations[].Instances[].InstanceId&quot;</span> -r \
+ | xargs -n1 -I instance_id aws ec2 terminate-instances --instance-ids instance_id
+</code></pre>
+</li>
+<li>If needed, delete security group and key pair if one was dedicated to this exercise<pre><code class="lang-sh"> aws ec2 delete-key-pair --key-name <span class="hljs-variable">$KEY_NAME</span>
+ aws ec2 delete-security-group --group-id <span class="hljs-variable">$SECURITY_GROUP_ID</span>
+</code></pre>
+</li>
+</ol>
+<h2 id="exercise-45-inspect-aws-service-health-dashboards">Exercise 4.5 Inspect AWS Service Health Dashboards</h2>
+<h3 id="up">Up</h3>
+<ol>
+<li>Go to <a href="http://status.aws.amazon.com" target="_blank">http://status.aws.amazon.com</a> and poke around a bit</li>
+<li>Go to <a href="http://phd.aws.amazon.com" target="_blank">http://phd.aws.amazon.com</a> and poke around a bit<h3 id="down">Down</h3>
+</li>
+<li>Log out of console</li>
+</ol>
+<h2 id="exercise-46-use-elastic-ip-address">Exercise 4.6 Use Elastic IP Address</h2>
+<h3 id="up">Up</h3>
+<ol>
+<li><p>Use existing or spin up new EC2 instance (Ubuntu Server)</p>
+<ol>
+<li>Assign variables<pre><code class="lang-sh"> IMAGE_AMI=<span class="hljs-string">&quot;ami-04169656fea786776&quot;</span> \
+ VPC_ID=$( \
+   aws ec2 describe-vpcs | jq -c <span class="hljs-string">&quot;.Vpcs | map(select(.IsDefault | contains(true)))[].VpcId&quot;</span> -r \
+ ) \
+ SG_NAME=YankeeZuluSG \
+ SG_DESCRIPTION=<span class="hljs-string">&quot;Security Group for Yankee Zulu&quot;</span>
+ KEY_NAME=YankeeZuluKP \
+ SUBNET_ID=$(
+   aws ec2 describe-subnets --filters <span class="hljs-string">&quot;Name=vpc-id,Values=<span class="hljs-variable">$VPC_ID</span>&quot;</span> | jq <span class="hljs-string">&quot;.Subnets[] | .SubnetId&quot;</span> -r | gshuf | head -n 1 \
+ ) \
+ SECURITY_GROUP_ID=$( \
+   aws ec2 describe-security-groups | jq <span class="hljs-string">&quot;.SecurityGroups | map(select(.GroupName | contains(\&quot;<span class="hljs-variable">$SG_NAME</span>\&quot;)))[] .GroupId&quot;</span> -r \
+ )
+</code></pre>
+</li>
+<li><p>Identify or create security group</p>
+<ol>
+<li><p>If none already exist</p>
+<pre><code class="lang-sh"> aws ec2 create-security-group --group-name <span class="hljs-variable">$SG_NAME</span> \
+ --description <span class="hljs-variable">$SG_DESCRIPTION</span> \
+ --vpc-id <span class="hljs-variable">$VPC_ID</span>
+</code></pre>
+</li>
+<li>Assign newly created security group ID to variable<pre><code class="lang-sh"> SECURITY_GROUP_ID=$(aws ec2 describe-security-groups | jq <span class="hljs-string">&quot;.SecurityGroups | map(select(.GroupName | contains(\&quot;<span class="hljs-variable">$SG_NAME</span>\&quot;)))[] .GroupId&quot;</span> -r)
+</code></pre>
+</li>
+<li>Create ingress rule for SSH from anywhere (0.0.0.0/0)<pre><code class="lang-sh"> aws ec2 authorize-security-group-ingress \
+ --group-id <span class="hljs-variable">$SECURITY_GROUP_ID</span> \
+ --protocol tcp \
+ --port 22 \
+ --cidr 0.0.0.0/0
+</code></pre>
+</li>
+</ol>
+</li>
+<li><p>Identify or create key pair</p>
+<ol>
+<li><p>If none already exist</p>
+<pre><code class="lang-sh"> aws ec2 create-key-pair --key-name <span class="hljs-variable">$KEY_NAME</span>  --query <span class="hljs-string">&apos;KeyMaterial&apos;</span> --output text &gt; <span class="hljs-string">&quot;<span class="hljs-variable">${KEY_NAME}</span>.pem&quot;</span>
+</code></pre>
+</li>
+<li>Ensure proper permissions exist on newly created .pem file<pre><code class="lang-sh"> chmod 400 <span class="hljs-string">&quot;<span class="hljs-variable">${KEY_NAME}</span>.pem&quot;</span>
+</code></pre>
+</li>
+</ol>
+</li>
+<li>Spin up EC2 instance<pre><code class="lang-sh"> aws ec2 run-instances \
+ --image-id <span class="hljs-variable">$IMAGE_AMI</span> \
+ --count 1 \
+ --instance-type t2.micro \
+ --key-name <span class="hljs-variable">$KEY_NAME</span> \
+ --security-group-ids <span class="hljs-variable">$SECURITY_GROUP_ID</span> \
+ --subnet-id <span class="hljs-variable">$SUBNET_ID</span>
+</code></pre>
+</li>
+<li>Assign instance ID to variable<pre><code class="lang-sh"> INSTANCE_ID=$(aws ec2 describe-instances | jq <span class="hljs-string">&apos;.Reservations[].Instances[].InstanceId&apos;</span> -r)
+</code></pre>
+ TODO: Above two commands could be combined</li>
+</ol>
+</li>
+<li>Make note of it&apos;s public IP address. This will be changed in later instructions<ol>
+<li>Run this command to identify EC2 instance public IP address</li>
+</ol>
+</li>
+<li><p>Allocate new Elastic IP address, if none exist</p>
+<pre><code class="lang-sh"> aws ec2 allocate-address --domain vpc
+</code></pre>
+<pre><code class="lang-sh"> ALLOCATION_ID=$(aws ec2 describe-addresses | jq <span class="hljs-string">&apos;.Addresses[].AllocationId&apos;</span> -r)
+</code></pre>
+<p> TODO: Above steps could probably be combined into one command. One can take the output of the create command and pipe into a variable.</p>
+</li>
+<li>Associate it to your EC2 instance<pre><code class="lang-sh"> aws ec2 associate-address --instance-id <span class="hljs-variable">$INSTANCE_ID</span> --allocation-id <span class="hljs-variable">$ALLOCATION_ID</span>
+</code></pre>
+</li>
+<li>SSH into your EC2 instance from the elastic IP address (this will be different than previous &quot;identify default public address of EC2 instance&quot; step)</li>
+</ol>
+<h3 id="down">Down</h3>
+<ol>
+<li>Disassociate elastic IP address</li>
+<li>Release elastic IP address</li>
+<li>Terminate EC2 instance</li>
+<li>Remove security group and key pair</li>
+</ol>
+<h2 id="exercise-47-work-with-metadata">Exercise 4.7 Work with Metadata</h2>
+<h3 id="up">Up</h3>
+<ol>
+<li>Launch EC2 instance</li>
+<li>Run command <code>curl http://169.254.169.254/latest/meta-data</code> to see meta data</li>
+<li>Add onto above curl command to see more information e.g.<pre><code class="lang-sh"> curl http://169.254.169.254/latest/meta-data/security-groups
+ curl http://169.254.169.254/latest/meta-data/public-ipv4
+</code></pre>
+</li>
+</ol>
+<h3 id="down">Down</h3>
+<ol>
+<li>Close down EC2 instance and any new security groups or keypairs for this exercise</li>
+</ol>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="ch3-Security-and-AWS-Identity-and-Access-Management-IAM.html" class="navigation navigation-prev " aria-label="Previous page: Chapter 3 Security and AWS Identity and Access Management (IAM)">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="ch5-Networking.html" class="navigation navigation-next " aria-label="Next page: Chapter 5 Networking">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Chapter 4 Compute","level":"1.2.2","depth":2,"next":{"title":"Chapter 5 Networking","level":"1.2.3","depth":2,"path":"sysops-admin-associate-study-guide-2018/ch5-Networking.md","ref":"sysops-admin-associate-study-guide-2018/ch5-Networking.md","articles":[]},"previous":{"title":"Chapter 3 Security and AWS Identity and Access Management (IAM)","level":"1.2.1","depth":2,"path":"sysops-admin-associate-study-guide-2018/ch3-Security-and-AWS-Identity-and-Access-Management-IAM.md","ref":"sysops-admin-associate-study-guide-2018/ch3-Security-and-AWS-Identity-and-Access-Management-IAM.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"sysops-admin-associate-study-guide-2018/ch4-Compute.md","mtime":"2018-09-13T12:34:02.445Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-14T10:19:41.161Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-livereload/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
