@@ -1,0 +1,26 @@
+{
+  "name": "aws-sysops-practice",
+  "version": "1.0.0",
+  "description": "The goal of this repo is to contain exercise code generated while training for AWS SysOps certification. Exercises will be mined from various sources.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "start": "gitbook serve",
+    "build": "gitbook build . docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aallbrig/aws-sysops-practice.git"
+  },
+  "author": "Andrew Allbright",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aallbrig/aws-sysops-practice/issues"
+  },
+  "homepage": "https://github.com/aallbrig/aws-sysops-practice#readme",
+  "devDependencies": {
+    "gitbook": "^3.2.3"
+  }
+}
