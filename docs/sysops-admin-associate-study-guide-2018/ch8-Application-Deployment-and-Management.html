@@ -245,7 +245,64 @@
                                 <h1 id="chapter-8-application-deployment-and-management">Chapter 8 Application Deployment and Management</h1>
 <h2 id="exercise-81-create-an-elastic-beanstalk-environment">Exercise 8.1 Create an Elastic Beanstalk Environment</h2>
 <h3 id="up">Up</h3>
+<ol>
+<li>Set up variables used in later commands<pre><code class="lang-sh">ENVIRONMENT_NAME=<span class="hljs-string">&quot;test-eb-env-<span class="hljs-variable">$(openssl rand -hex 8)</span>&quot;</span>
+APPLICATION_NAME=<span class="hljs-string">&quot;test-eb-app-<span class="hljs-variable">$(openssl rand -hex 8)</span>&quot;</span>
+TEMPLATE_NAME=<span class="hljs-string">&quot;test-eb-temp-<span class="hljs-variable">$(openssl rand -hex 8)</span>&quot;</span>
+VERSION_LABEL=<span class="hljs-string">&quot;version-<span class="hljs-variable">$(openssl rand -hex 16)</span>&quot;</span>
+CNAME_PREFIX=<span class="hljs-string">&quot;test-cname-<span class="hljs-variable">$(openssl rand -hex 8)</span>&quot;</span>
+RANDOM_BUCKET_NAME=<span class="hljs-string">&quot;test-bucket-<span class="hljs-variable">$(openssl rand -hex 18)</span>&quot;</span>
+BUNDLE_KEY=my-source-bundle.zip
+</code></pre>
+</li>
+<li>Create new S3 bucket<pre><code class="lang-sh">aws s3 mb <span class="hljs-string">&quot;s3://<span class="hljs-variable">${RANDOM_BUCKET_NAME}</span>&quot;</span>
+</code></pre>
+</li>
+<li>Create dummy source bundle<ol>
+<li>Create ch8 directory<pre><code class="lang-sh">mkdir ch8
+</code></pre>
+</li>
+<li>Create a test file<pre><code class="lang-sh">touch ch8/test.txt
+</code></pre>
+</li>
+<li>Zip up ch8 folder into a bundle<pre><code class="lang-sh">zip -r <span class="hljs-variable">$BUNDLE_KEY</span> ch8
+</code></pre>
+</li>
+</ol>
+</li>
+<li>Move dummy source bundle into newly created S3 bucket<pre><code class="lang-sh">aws s3 cp <span class="hljs-variable">$BUNDLE_KEY</span> <span class="hljs-string">&quot;s3://<span class="hljs-variable">${RANDOM_BUCKET_NAME}</span>/<span class="hljs-variable">${BUNDLE_KEY}</span>&quot;</span>
+</code></pre>
+</li>
+<li>Create an Elastic Beanstalk application<pre><code class="lang-sh">aws elasticbeanstalk create-application --application-name <span class="hljs-variable">$APPLICATION_NAME</span>
+</code></pre>
+</li>
+<li>Create an Elastic Beanstalk application version<pre><code class="lang-sh">aws elasticbeanstalk create-application-version --application-name <span class="hljs-variable">$APPLICATION_NAME</span> --version-label <span class="hljs-variable">$VERSION_LABEL</span> --source-bundle S3Bucket=<span class="hljs-variable">$RANDOM_BUCKET_NAME</span>,S3Key=<span class="hljs-variable">$BUNDLE_KEY</span>
+</code></pre>
+</li>
+<li>Create configuration template for application<pre><code class="lang-sh">aws elasticbeanstalk create-configuration-template --application-name <span class="hljs-variable">$APPLICATION_NAME</span> --template-name <span class="hljs-variable">$TEMPLATE_NAME</span> --solution-stack-name <span class="hljs-string">&quot;64bit Amazon Linux 2018.03 v2.7.3 running Python 3.6&quot;</span>
+</code></pre>
+(Python solution stack selected because why not. Find more solution stacks by running <code>aws elasticbeanstalk list-available-solution-stacks</code>)</li>
+<li>Create environment<pre><code class="lang-sh">aws elasticbeanstalk create-environment --cname-prefix <span class="hljs-variable">$CNAME_PREFIX</span> --application-name <span class="hljs-variable">$APPLICATION_NAME</span> --template-name <span class="hljs-variable">$TEMPLATE_NAME</span> --version-label <span class="hljs-variable">$VERSION_LABEL</span> --environment-name <span class="hljs-variable">$ENVIRONMENT_NAME</span>
+</code></pre>
 <h3 id="down">Down</h3>
+</li>
+<li>Terminate environment<pre><code class="lang-sh">aws elasticbeanstalk terminate-environment --environment-name <span class="hljs-variable">$ENVIRONMENT_NAME</span>
+</code></pre>
+</li>
+<li>Delete configuration template<pre><code class="lang-sh">aws elasticbeanstalk delete-configuration-template --application-name <span class="hljs-variable">$APPLICATION_NAME</span> --template-name <span class="hljs-variable">$TEMPLATE_NAME</span>
+</code></pre>
+</li>
+<li>Delete application version<pre><code class="lang-sh">aws elasticbeanstalk delete-application-version --application-name <span class="hljs-variable">$APPLICATION_NAME</span> --version-label <span class="hljs-variable">$VERSION_LABEL</span>
+</code></pre>
+</li>
+<li>Delete application<pre><code class="lang-sh">aws elasticbeanstalk delete-application --application-name <span class="hljs-variable">$APPLICATION_NAME</span>
+</code></pre>
+</li>
+<li>Delete S3 bucket<pre><code class="lang-sh">aws s3 rm <span class="hljs-string">&quot;s3://<span class="hljs-variable">${RANDOM_BUCKET_NAME}</span>&quot;</span> --recursive
+aws s3api delete-bucket --bucket <span class="hljs-string">&quot;<span class="hljs-variable">${RANDOM_BUCKET_NAME}</span>&quot;</span>
+</code></pre>
+</li>
+</ol>
 <h2 id="exercise-82-manage-application-versions-with-elastic-beanstalk">Exercise 8.2 Manage Application Versions with Elastic Beanstalk</h2>
 <h3 id="up">Up</h3>
 <h3 id="down">Down</h3>
@@ -321,7 +378,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Chapter 8 Application Deployment and Management","level":"1.2.6","depth":2,"previous":{"title":"Chapter 7 Databases","level":"1.2.5","depth":2,"path":"sysops-admin-associate-study-guide-2018/ch7-Databases.md","ref":"sysops-admin-associate-study-guide-2018/ch7-Databases.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"sysops-admin-associate-study-guide-2018/ch8-Application-Deployment-and-Management.md","mtime":"2018-09-12T02:36:28.084Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-14T11:49:36.629Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Chapter 8 Application Deployment and Management","level":"1.2.6","depth":2,"previous":{"title":"Chapter 7 Databases","level":"1.2.5","depth":2,"path":"sysops-admin-associate-study-guide-2018/ch7-Databases.md","ref":"sysops-admin-associate-study-guide-2018/ch7-Databases.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"sysops-admin-associate-study-guide-2018/ch8-Application-Deployment-and-Management.md","mtime":"2018-09-17T02:28:06.270Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-17T02:28:18.619Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
