@@ -64,10 +64,10 @@
     1. Attach internet gateway to VPC
 
         ```sh
-        aws ec2 attach-internet-gateway --vpc-id $VPC_ID --internet-gateway-id $INTERNET_GATEWAY_ID 
+        aws ec2 attach-internet-gateway --vpc-id $VPC_ID --internet-gateway-id $INTERNET_GATEWAY_ID
         ```
     1. Create custom route table for VPC
-        
+
         ```sh
         ROUTE_TABLE_ID=$(aws ec2 create-route-table --vpc-id $VPC_ID --query 'RouteTable.RouteTableId' --output text)
         ```
@@ -91,7 +91,7 @@
         aws ec2 associate-route-table --subnet-id $PUBLIC_SUBNET_ID --route-table-id $ROUTE_TABLE_ID
         ```
     1. Map public IP on launch when launching into public subnet
-        
+
         ```sh
         aws ec2 modify-subnet-attribute --subnet-id $PUBLIC_SUBNET_ID --map-public-ip-on-launch
         ```
