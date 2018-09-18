@@ -19,11 +19,16 @@ aws s3 mb "s3://${RANDOM_BUCKET_NAME}"
 1. Create dummy source bundle
     1. Create ch8 directory
     ```sh
-    mkdir ch8
+    mkdir -p ch8
     ```
     1. Create a test file
     ```sh
-    touch ch8/test.txt
+    cat <<HEREDOC > ch8/index.html
+    <html>
+        <head><title>Test HTML page</title></head>
+        <body><h3>Test HTML page</h3></body>
+    </html>
+    HEREDOC
     ```
     1. Zip up ch8 folder into a bundle
     ```sh
