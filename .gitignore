@@ -1,3 +1,4 @@
 **/*.pem
 _book
 node_modules
+*.zip
