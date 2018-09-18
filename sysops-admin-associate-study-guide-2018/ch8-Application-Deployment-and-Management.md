@@ -55,6 +55,11 @@ aws elasticbeanstalk create-configuration-template --application-name $APPLICATI
 ```sh
 aws elasticbeanstalk create-environment --cname-prefix $CNAME_PREFIX --application-name $APPLICATION_NAME --template-name $TEMPLATE_NAME --version-label $VERSION_LABEL --environment-name $ENVIRONMENT_NAME
 ```
+1. Query every now and again until the environment is green
+```sh
+aws elasticbeanstalk describe-environments --environment-names $ENVIRONMENT_NAME
+```
+1. Celebrate.
 ### Down
 1. Terminate environment
 ```sh
