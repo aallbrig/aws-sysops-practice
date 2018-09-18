@@ -1,6 +1,6 @@
 # Chapter 8 Application Deployment and Management
 
-## Exercise 8.1 Create an Elastic Beanstalk Environment
+## Exercise 8.1 Create an Elastic Beanstalk Environment, Exercise 8.2 Manage Application Versions with Elastic Beanstalk
 ### Up
 1. Set up variables used in later commands
 ```sh
@@ -82,10 +82,6 @@ aws elasticbeanstalk delete-application --application-name $APPLICATION_NAME
 aws s3 rm "s3://${RANDOM_BUCKET_NAME}" --recursive
 aws s3api delete-bucket --bucket "${RANDOM_BUCKET_NAME}"
 ```
-
-## Exercise 8.2 Manage Application Versions with Elastic Beanstalk
-### Up
-### Down
 
 ## Exercise 8.3 Perform a Blue/Green Deployment with Elastic Beanstalk
 ### Up
