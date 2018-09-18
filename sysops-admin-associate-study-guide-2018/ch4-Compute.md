@@ -18,7 +18,7 @@
     1. Add HTTP inbound rule to `YankeeZuluSG` from anywhere
     1. `mkdir www && cd www`
     1. `touch index.html`
-    1. Run...  
+    1. Run...
         ```sh
         cat <<HEREDOC > index.html
         <html>
@@ -26,8 +26,8 @@
           <body><h3>Test HTML page</h3></body>
         </html>
         HEREDOC
-        ``` 
-    1. `sudo python3 -m http.server 80`  
+        ```
+    1. `sudo python3 -m http.server 80`
 1. Run `ifconfig -a` then make note of IP address
 1. Access instance metadata by running `curl http://169.254.169.254/latest/meta-data/public-ipv4`
 1. Exist SSH session
@@ -68,7 +68,7 @@ Before starting, take note of AMI ID for the target region.
     IMAGE_AMI= \
     KEY_NAME= \
     SECURITY_GROUP_ID= \
-    SUBNET_ID= 
+    SUBNET_ID=
     ```
 1. Run the command...
     ```sh
@@ -119,7 +119,7 @@ Before starting, take note of AMI ID for the target region.
     aws ec2 describe-security-groups | jq ".SecurityGroups | map(select(.GroupName | contains(\"$SG_NAME\")))[]"
     ```
 
-    Above will return an object or nothing. If nothing, the security group does not exist.  
+    Above will return an object or nothing. If nothing, the security group does not exist.
     1. If no security group exists, run...
         ```sh
         aws ec2 create-security-group --group-name $SG_NAME \
@@ -136,7 +136,7 @@ Before starting, take note of AMI ID for the target region.
         --group-id $SECURITY_GROUP_ID \
         --protocol tcp \
         --port 3389 \
-        --cidr 0.0.0.0/0 
+        --cidr 0.0.0.0/0
         ```
 1. Identify if you already have relevant key pair
     ```sh
