@@ -2,3 +2,5 @@
 _book
 node_modules
 *.zip
+virt/*
+virt
