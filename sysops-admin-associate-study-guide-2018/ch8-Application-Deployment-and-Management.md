@@ -21,14 +21,62 @@ aws s3 mb "s3://${RANDOM_BUCKET_NAME}"
     ```sh
     mkdir -p ch8
     ```
-    1. Create a test file
+    1. Create simple Flask application
+        1. Use `ch8` as your current working directory
+        ```sh
+        cd ch8
+        ```
+        1. Create and activate virtual environment
+        ```sh
+        virtualenv virt
+        source virt/bin/activate
+        ```
+        1. Install flask and freeze requirements
+        ```sh
+        pip install flask==1.0.2
+        pip freeze > requirements.txt
+        ```
+        1. Create `application.py` and paste following python code into file
+        ```python
+		from flask import Flask
+
+        # print a nice greeting.
+		def say_hello(username = "World"):
+			return '<p>Hello %s!</p>\n' % username
+
+        # some bits of text for the page.
+		header_text = '''
+			<html>\n<head> <title>EB Flask Test</title> </head>\n<body>'''
+		instructions = '''
+			<p><em>Hint</em>: This is a RESTful web service! Append a username
+			to the URL (for example: <code>/Thelonious</code>) to say hello to
+			someone specific.</p>\n'''
+		home_link = '<p><a href="/">Back</a></p>\n'
+		footer_text = '</body>\n</html>'
+
+        # EB looks for an 'application' callable by default.
+		application = Flask(__name__)
+
+        # add a rule for the index page.
+		application.add_url_rule('/', 'index', (lambda: header_text +
+			say_hello() + instructions + footer_text))
+
+        # add a rule when the page is accessed with a name appended to the site
+        # URL.
+		application.add_url_rule('/<username>', 'hello', (lambda username:
+			header_text + say_hello(username) + home_link + footer_text))
+
+        # run the app.
+		if __name__ == "__main__":
+			# Setting debug to True enables debug output. This line should be
+			# removed before deploying a production app.
+			application.debug = True
+			application.run()
+        ```
+        1. Test by running `python application.py`
+    1. Initialize `.elasticbeanstalk/*` folder using awsebcli
     ```sh
-    cat <<HEREDOC > ch8/index.html
-    <html>
-        <head><title>Test HTML page</title></head>
-        <body><h3>Test HTML page</h3></body>
-    </html>
-    HEREDOC
+    eb init $APPLICATION_NAME -p python-3.6 --region us-east-1
     ```
     1. Zip up ch8 folder into a bundle
     ```sh
@@ -59,7 +107,16 @@ aws elasticbeanstalk create-environment --cname-prefix $CNAME_PREFIX --applicati
 ```sh
 aws elasticbeanstalk describe-environments --environment-names $ENVIRONMENT_NAME
 ```
-1. Celebrate.
+1. Deploy code
+```sh
+cd ch8
+eb deploy
+```
+1. Open application in browser
+```sh
+eb open
+```
+
 ### Down
 1. Terminate environment
 ```sh
@@ -85,6 +142,8 @@ aws s3api delete-bucket --bucket "${RANDOM_BUCKET_NAME}"
 
 ## Exercise 8.3 Perform a Blue/Green Deployment with Elastic Beanstalk
 ### Up
+1. Follow exercise 8.1/8.2 to spin up EB environment
+1. Clone environment
 ### Down
 
 ## Exercise 8.4 Create an ECS Cluster
