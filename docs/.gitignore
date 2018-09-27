@@ -1,3 +1,6 @@
 **/*.pem
 _book
 node_modules
+*.zip
+virt/*
+virt

@@ -267,7 +267,7 @@
 <li>Add HTTP inbound rule to <code>YankeeZuluSG</code> from anywhere</li>
 <li><code>mkdir www &amp;&amp; cd www</code></li>
 <li><code>touch index.html</code></li>
-<li>Run...  <pre><code class="lang-sh"> cat &lt;&lt;HEREDOC &gt; index.html
+<li>Run...<pre><code class="lang-sh"> cat &lt;&lt;HEREDOC &gt; index.html
  &lt;html&gt;
    &lt;head&gt;&lt;title&gt;Test HTML page&lt;/title&gt;&lt;/head&gt;
    &lt;body&gt;&lt;h3&gt;Test HTML page&lt;/h3&gt;&lt;/body&gt;
@@ -275,7 +275,7 @@
  HEREDOC
 </code></pre>
 </li>
-<li><code>sudo python3 -m http.server 80</code>  </li>
+<li><code>sudo python3 -m http.server 80</code></li>
 </ol>
 </li>
 <li>Run <code>ifconfig -a</code> then make note of IP address</li>
@@ -369,7 +369,7 @@
 <li><p>Identify if you already have relevant security group</p>
 <pre><code class="lang-sh"> aws ec2 describe-security-groups | jq <span class="hljs-string">&quot;.SecurityGroups | map(select(.GroupName | contains(\&quot;<span class="hljs-variable">$SG_NAME</span>\&quot;)))[]&quot;</span>
 </code></pre>
-<p> Above will return an object or nothing. If nothing, the security group does not exist.  </p>
+<p> Above will return an object or nothing. If nothing, the security group does not exist.</p>
 <ol>
 <li>If no security group exists, run...<pre><code class="lang-sh"> aws ec2 create-security-group --group-name <span class="hljs-variable">$SG_NAME</span> \
  --description <span class="hljs-variable">$SG_DESCRIPTION</span> \
@@ -576,7 +576,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Chapter 4 Compute","level":"1.2.2","depth":2,"next":{"title":"Chapter 5 Networking","level":"1.2.3","depth":2,"path":"sysops-admin-associate-study-guide-2018/ch5-Networking.md","ref":"sysops-admin-associate-study-guide-2018/ch5-Networking.md","articles":[]},"previous":{"title":"Chapter 3 Security and AWS Identity and Access Management (IAM)","level":"1.2.1","depth":2,"path":"sysops-admin-associate-study-guide-2018/ch3-Security-and-AWS-Identity-and-Access-Management-IAM.md","ref":"sysops-admin-associate-study-guide-2018/ch3-Security-and-AWS-Identity-and-Access-Management-IAM.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"sysops-admin-associate-study-guide-2018/ch4-Compute.md","mtime":"2018-09-13T12:34:02.445Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-17T02:28:18.619Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Chapter 4 Compute","level":"1.2.2","depth":2,"next":{"title":"Chapter 5 Networking","level":"1.2.3","depth":2,"path":"sysops-admin-associate-study-guide-2018/ch5-Networking.md","ref":"sysops-admin-associate-study-guide-2018/ch5-Networking.md","articles":[]},"previous":{"title":"Chapter 3 Security and AWS Identity and Access Management (IAM)","level":"1.2.1","depth":2,"path":"sysops-admin-associate-study-guide-2018/ch3-Security-and-AWS-Identity-and-Access-Management-IAM.md","ref":"sysops-admin-associate-study-guide-2018/ch3-Security-and-AWS-Identity-and-Access-Management-IAM.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"sysops-admin-associate-study-guide-2018/ch4-Compute.md","mtime":"2018-09-18T01:12:40.146Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-27T12:58:10.856Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
