@@ -145,6 +145,7 @@ aws s3api delete-bucket --bucket "${RANDOM_BUCKET_NAME}"
 1. Follow exercise 8.1/8.2 to spin up EB environment
 1. Clone environment
 ### Down
+1. Follow exercise 8.1/8.2 to spin down EB environment
 
 ## Exercise 8.4 Create an ECS Cluster
 ### Up
