@@ -11,4 +11,5 @@ Microsoft Azure, or any others that may crop up in the near future.
 1. [Chapter 5 Networking](https://quizlet.com/322147221/flashcards)
 1. [Chapter 6 Storage Systems](https://quizlet.com/323013494/flashcards)
 1. [Chapter 7 Databases](https://quizlet.com/327931064/flashcards)
+1. [Chapter 8 Application Deployment and Management](https://quizlet.com/328250807/flashcards)
 
