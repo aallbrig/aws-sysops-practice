@@ -13,4 +13,5 @@ Microsoft Azure, or any others that may crop up in the near future.
 1. [Chapter 7 Databases](https://quizlet.com/327931064/flashcards)
 1. [Chapter 8 Application Deployment and Management](https://quizlet.com/328250807/flashcards)
 1. [Chapter 9 Monitoring and Metrics](https://quizlet.com/328429158/flashcards)
+1. [Chapter 10 High Availability](https://quizlet.com/328770970/flashcards)
 
